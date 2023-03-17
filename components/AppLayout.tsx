@@ -1,4 +1,7 @@
 import React, { ReactNode } from 'react';
+import { FormOutlined } from '@ant-design/icons';
+
+import { LayoutWrapper, LayoutLogo } from '@styles/applayout';
 
 interface Props {
   children: ReactNode;
@@ -6,10 +9,16 @@ interface Props {
 
 const AppLayout = ({ children }: Props) => {
   return (
-    <div>
-      <div>공통메뉴</div>
+    <>
+      <LayoutWrapper>
+        <LayoutLogo>
+          <FormOutlined />
+          <p>NOTICE BOARD</p>
+        </LayoutLogo>
+      </LayoutWrapper>
+
       {children}
-    </div>
+    </>
   );
 };
 

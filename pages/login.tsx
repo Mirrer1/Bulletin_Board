@@ -7,7 +7,6 @@ const login = () => {
   return (
     <>
       <Head>
-        <meta charSet="utf-8" />
         <title>Notice Board | Post Name</title>
       </Head>
 
