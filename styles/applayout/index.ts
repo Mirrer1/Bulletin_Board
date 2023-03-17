@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
-import media from '@styles/media';
 import { Space } from 'antd';
+
+import media from '@styles/media';
 
 export const LayoutWrapper = styled.header`
   padding: 1em 2em;
