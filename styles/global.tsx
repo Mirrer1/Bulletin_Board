@@ -31,6 +31,7 @@ const style = css`
   #__next {
     height: 100%;
     font-family: 'Noto Sans KR', sans-serif;
+    background-color: #f5f5f5;
   }
 
   img,

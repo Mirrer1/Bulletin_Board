@@ -1,5 +1,5 @@
 {
-  "extends": ["react-app", "prettier/prettier"],
+  "extends": ["react-app", "prettier/prettier", "next/core-web-vitals"],
   "plugins": ["react-hooks", "simple-import-sort", "prettier"],
   "rules": {
     "prettier/prettier": "error",
@@ -18,10 +18,8 @@
     "semi": ["error", "never"],
     "import/no-anonymous-default-export": 0,
     "object-shorthand": "error",
-    "padding-line-between-statements": [
-      "error",
-      { "blankLine": "always", "prev": "*", "next": "return" }
-    ],
-    "@typescript-eslint/no-redeclare": 0
+    "padding-line-between-statements": ["error", { "blankLine": "always", "prev": "*", "next": "return" }],
+    "@typescript-eslint/no-redeclare": 0,
+    "@next/next/no-img-element": "off"
   }
 }

@@ -2,7 +2,7 @@ import { Theme } from '@emotion/react';
 
 const theme: Theme = {
   colors: {
-    primary: '#b99976',
+    primary: '#FFFFFF',
   },
   calcRem: pxSize => {
     return `${pxSize / 16}rem`;
