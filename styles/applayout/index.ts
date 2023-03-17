@@ -18,6 +18,7 @@ export const LayoutWrapper = styled.header`
 export const LayoutLogo = styled(Space)`
   font-size: ${({ theme }) => theme.calcRem(24)};
   font-weight: 700;
+  cursor: pointer;
 
   & > div > p {
     margin-bottom: 0;
