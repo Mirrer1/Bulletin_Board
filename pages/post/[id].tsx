@@ -1,12 +1,14 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { Col, Row } from 'antd';
+import { Divider, Row } from 'antd';
 import { CommentOutlined } from '@ant-design/icons';
 import Head from 'next/head';
 
 import AppLayout from '@components/AppLayout';
 import CommentForm from '@components/PostComment/CommentForm';
 import CommentList from '@components/PostComment/CommentList';
+
+import { PostWrapper, PostContent, PostWriteInfo, PostCommentInfo } from '@styles/postDetail/post';
 
 const Post = () => {
   const router = useRouter();
@@ -26,30 +28,34 @@ const Post = () => {
       </Head>
 
       <AppLayout>
-        <section>
-          <header>{id} London, Park Lane no.</header>
+        <PostWrapper>
+          <PostContent>
+            <header>{id} London, Park Lane no.</header>
 
-          <Row>
-            <Col>
-              <div>Edward King</div>
-              <div>2023. 1. 29</div>
-            </Col>
+            <Row justify="space-between">
+              <PostWriteInfo>
+                <div>Edward King</div>
+                <div>2023. 1. 29</div>
+              </PostWriteInfo>
 
-            <Col>
-              <CommentOutlined />
-              <div>댓글 1</div>
-            </Col>
-          </Row>
+              <PostCommentInfo>
+                <CommentOutlined />
+                <div>댓글 1</div>
+              </PostCommentInfo>
+            </Row>
 
-          <p>
-            Park Lane no. London, Park Lane no. London, Park Lane no. London, Park Lane no.Park Lane no. London, Park
-            Lane no. London, Park Lane no. London, Park Lane no.Park Lane no. London, Park Lane no. London, Park Lane
-            no. London, Park Lane no.Park Lane no. London, Park Lane no. London, Park Lane no. London, Park Lane no.
-          </p>
+            <Divider />
+
+            <p>
+              Park Lane no. London, Park Lane no. London, Park Lane no. London, Park Lane no.Park Lane no. London, Park
+              Lane no. London, Park Lane no. London, Park Lane no.Park Lane no. London, Park Lane no. London, Park Lane
+              no. London, Park Lane no.Park Lane no. London, Park Lane no. London, Park Lane no. London, Park Lane no.
+            </p>
+          </PostContent>
 
           <CommentForm />
           <CommentList />
-        </section>
+        </PostWrapper>
       </AppLayout>
     </>
   );

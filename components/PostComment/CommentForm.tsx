@@ -1,6 +1,8 @@
 import React, { useCallback } from 'react';
 import { Form, Input, Row, Button } from 'antd';
 
+import { CommentFormWrapper } from '@styles/postDetail/postComment';
+
 const CommentForm = () => {
   const [form] = Form.useForm();
 
@@ -10,7 +12,7 @@ const CommentForm = () => {
 
   return (
     <>
-      <Form form={form} name="writeComment" onFinish={onSubmitComment}>
+      <CommentFormWrapper form={form} name="writeComment" onFinish={onSubmitComment}>
         <Form.Item
           name="comment"
           rules={[
@@ -28,7 +30,7 @@ const CommentForm = () => {
             등록
           </Button>
         </Row>
-      </Form>
+      </CommentFormWrapper>
     </>
   );
 };

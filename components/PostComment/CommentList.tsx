@@ -1,6 +1,14 @@
 import React from 'react';
 import { List } from 'antd';
 
+import { CommentListWrapper, CommentWrapper, CommentInfo, CommentBtn } from '@styles/postDetail/postComment';
+
+interface DataType {
+  writer: string;
+  content: string;
+  created_at: string;
+}
+
 const CommentList = () => {
   const data = [
     {
@@ -27,18 +35,24 @@ const CommentList = () => {
 
   return (
     <>
-      <List
+      <CommentListWrapper
+        header="총 4개의 댓글"
         itemLayout="horizontal"
         dataSource={data}
-        renderItem={item => (
-          <List.Item actions={[<a key="comment-edit">수정</a>, <a key="comment-delete">삭제</a>]}>
-            <List.Item.Meta
+        renderItem={(item: any) => (
+          <List.Item
+            actions={[
+              <CommentBtn key="comment-edit">수정</CommentBtn>,
+              <CommentBtn key="comment-delete">삭제</CommentBtn>,
+            ]}
+          >
+            <CommentWrapper
               title={item.writer}
               description={
-                <>
+                <CommentInfo>
                   <div>{item.content}</div>
                   <div>{item.created_at}</div>
-                </>
+                </CommentInfo>
               }
             />
           </List.Item>
