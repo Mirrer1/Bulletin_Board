@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { CommentOutlined } from '@ant-design/icons';
+import Router from 'next/router';
 
 import { ListContentHeader, ListContentInfo } from '@styles/postList';
 
@@ -52,7 +53,7 @@ const PostList = () => {
   const onRow = (record: DataType) => {
     return {
       onClick: () => {
-        console.log(record);
+        Router.push(`/post/${record.key}`);
       },
     };
   };
