@@ -51,10 +51,11 @@ const style = css`
 
   a {
     text-decoration: none;
-    color: black;
+    transition: opacity 250ms ease-in;
   }
+
   a:hover {
-    color: black;
+    opacity: 50%;
   }
 
   table {
