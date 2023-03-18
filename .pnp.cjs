@@ -32,6 +32,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@emotion/react", "virtual:e01c2a256ecb359e7f62a7209b3de8f2cf0132d8afab75d87f97ef57fccf51a98b38fd67115cc19d7ddfb4c89bde39d6d86b35be6b7df6c2d2889698d4757a31#npm:11.10.6"],\
             ["@emotion/styled", "virtual:e01c2a256ecb359e7f62a7209b3de8f2cf0132d8afab75d87f97ef57fccf51a98b38fd67115cc19d7ddfb4c89bde39d6d86b35be6b7df6c2d2889698d4757a31#npm:11.10.6"],\
             ["@reduxjs/toolkit", "virtual:e01c2a256ecb359e7f62a7209b3de8f2cf0132d8afab75d87f97ef57fccf51a98b38fd67115cc19d7ddfb4c89bde39d6d86b35be6b7df6c2d2889698d4757a31#npm:1.9.3"],\
+            ["@types/lodash", "npm:4.14.191"],\
             ["@types/node", "npm:18.15.3"],\
             ["@types/react", "npm:18.0.28"],\
             ["@types/react-dom", "npm:18.0.11"],\
@@ -47,6 +48,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-plugin-prettier", "virtual:e01c2a256ecb359e7f62a7209b3de8f2cf0132d8afab75d87f97ef57fccf51a98b38fd67115cc19d7ddfb4c89bde39d6d86b35be6b7df6c2d2889698d4757a31#npm:4.2.1"],\
             ["eslint-plugin-react", "virtual:e01c2a256ecb359e7f62a7209b3de8f2cf0132d8afab75d87f97ef57fccf51a98b38fd67115cc19d7ddfb4c89bde39d6d86b35be6b7df6c2d2889698d4757a31#npm:7.32.2"],\
             ["eslint-plugin-react-hooks", "virtual:e01c2a256ecb359e7f62a7209b3de8f2cf0132d8afab75d87f97ef57fccf51a98b38fd67115cc19d7ddfb4c89bde39d6d86b35be6b7df6c2d2889698d4757a31#npm:4.6.0"],\
+            ["lodash", "npm:4.17.21"],\
             ["next", "virtual:e01c2a256ecb359e7f62a7209b3de8f2cf0132d8afab75d87f97ef57fccf51a98b38fd67115cc19d7ddfb4c89bde39d6d86b35be6b7df6c2d2889698d4757a31#npm:13.2.4"],\
             ["next-redux-wrapper", "virtual:e01c2a256ecb359e7f62a7209b3de8f2cf0132d8afab75d87f97ef57fccf51a98b38fd67115cc19d7ddfb4c89bde39d6d86b35be6b7df6c2d2889698d4757a31#npm:8.1.0"],\
             ["prettier", "npm:2.8.4"],\
@@ -791,6 +793,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@types/lodash", [\
+        ["npm:4.14.191", {\
+          "packageLocation": "./.yarn/cache/@types-lodash-npm-4.14.191-67a04a969b-ba0d5434e1.zip/node_modules/@types/lodash/",\
+          "packageDependencies": [\
+            ["@types/lodash", "npm:4.14.191"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["@types/node", [\
         ["npm:18.15.3", {\
           "packageLocation": "./.yarn/cache/@types-node-npm-18.15.3-d092b0c75c-31b1d92475.zip/node_modules/@types/node/",\
@@ -1447,6 +1458,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@emotion/react", "virtual:e01c2a256ecb359e7f62a7209b3de8f2cf0132d8afab75d87f97ef57fccf51a98b38fd67115cc19d7ddfb4c89bde39d6d86b35be6b7df6c2d2889698d4757a31#npm:11.10.6"],\
             ["@emotion/styled", "virtual:e01c2a256ecb359e7f62a7209b3de8f2cf0132d8afab75d87f97ef57fccf51a98b38fd67115cc19d7ddfb4c89bde39d6d86b35be6b7df6c2d2889698d4757a31#npm:11.10.6"],\
             ["@reduxjs/toolkit", "virtual:e01c2a256ecb359e7f62a7209b3de8f2cf0132d8afab75d87f97ef57fccf51a98b38fd67115cc19d7ddfb4c89bde39d6d86b35be6b7df6c2d2889698d4757a31#npm:1.9.3"],\
+            ["@types/lodash", "npm:4.14.191"],\
             ["@types/node", "npm:18.15.3"],\
             ["@types/react", "npm:18.0.28"],\
             ["@types/react-dom", "npm:18.0.11"],\
@@ -1462,6 +1474,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-plugin-prettier", "virtual:e01c2a256ecb359e7f62a7209b3de8f2cf0132d8afab75d87f97ef57fccf51a98b38fd67115cc19d7ddfb4c89bde39d6d86b35be6b7df6c2d2889698d4757a31#npm:4.2.1"],\
             ["eslint-plugin-react", "virtual:e01c2a256ecb359e7f62a7209b3de8f2cf0132d8afab75d87f97ef57fccf51a98b38fd67115cc19d7ddfb4c89bde39d6d86b35be6b7df6c2d2889698d4757a31#npm:7.32.2"],\
             ["eslint-plugin-react-hooks", "virtual:e01c2a256ecb359e7f62a7209b3de8f2cf0132d8afab75d87f97ef57fccf51a98b38fd67115cc19d7ddfb4c89bde39d6d86b35be6b7df6c2d2889698d4757a31#npm:4.6.0"],\
+            ["lodash", "npm:4.17.21"],\
             ["next", "virtual:e01c2a256ecb359e7f62a7209b3de8f2cf0132d8afab75d87f97ef57fccf51a98b38fd67115cc19d7ddfb4c89bde39d6d86b35be6b7df6c2d2889698d4757a31#npm:13.2.4"],\
             ["next-redux-wrapper", "virtual:e01c2a256ecb359e7f62a7209b3de8f2cf0132d8afab75d87f97ef57fccf51a98b38fd67115cc19d7ddfb4c89bde39d6d86b35be6b7df6c2d2889698d4757a31#npm:8.1.0"],\
             ["prettier", "npm:2.8.4"],\
