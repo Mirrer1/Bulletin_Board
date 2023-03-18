@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
+import _ from 'lodash';
 
 import { loadPosts } from '@actions/post';
-import { PostState } from '@typings/db';
+import { Comment, Post, PostState } from '@typings/db';
 
 const initialState: PostState = {
   mainPosts: [],
@@ -22,9 +23,23 @@ const postSlice = createSlice({
         state.loadPostsError = null;
       })
       .addCase(loadPosts.fulfilled, (state, action) => {
+        // 테이블 아이템 갯수 확인용
+        // action.payload.posts.forEach((v: Post) => {
+        //   state.mainPosts.push({ id: v.id, content: v.content, writer: v.writer, comments: [] });
+        // });
+
+        const posts: Post[] = [];
+        action.payload.posts.forEach((v: Post) => {
+          posts.push({ id: v.id, content: v.content, writer: v.writer, comments: [] });
+        });
+        state.mainPosts = posts;
+
+        action.payload.comments.forEach((v: Comment) => {
+          const post = _.find(state.mainPosts, { id: v.postId });
+          post?.comments.push({ id: v.id });
+        });
         state.loadPostsLoading = false;
         state.loadPostsDone = true;
-        state.mainPosts = action.payload;
       })
       .addCase(loadPosts.rejected, (state, action) => {
         state.loadPostsLoading = false;

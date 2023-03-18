@@ -10,7 +10,6 @@ import { loadPosts } from '@actions/post';
 
 const Home = () => {
   const dispatch = useAppDispatch();
-  const { mainPosts } = useAppSelector(state => state.post);
 
   useEffect(() => {
     dispatch(loadPosts());
