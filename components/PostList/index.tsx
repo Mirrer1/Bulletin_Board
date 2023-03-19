@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+import { Table } from 'antd';
 import { CommentOutlined } from '@ant-design/icons';
 import Router from 'next/router';
 

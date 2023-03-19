@@ -27,14 +27,11 @@ const Post = () => {
   return (
     <>
       <Head>
-        <title>Notice Board | Post Name</title>
-
-        {/* <title>{singlePost?.title} 게시글</title>
-        <meta name='description' content={singlePost?.desc}/>
-        <meta property='og:title' content={`${singlePost?.User.nickname}님의 게시글`} />
-        <meta property='og:description' content={singlePost?.desc} />      
-        <meta property="og:image" content={singlePost?.Images[0].src } />           
-        <meta property='og:url' content={`http://recipeio.ga/post/${id}`} /> */}
+        <title>Notice Board | {singlePost?.title} 게시글</title>
+        <meta name="description" content={singlePost?.content} />
+        <meta property="og:title" content={`${singlePost?.writer}님의 게시글`} />
+        <meta property="og:description" content={singlePost?.content} />
+        <meta property="og:url" content={`http://localhost:3010/post/${id}`} />
       </Head>
 
       <AppLayout>
