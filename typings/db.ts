@@ -29,3 +29,7 @@ export interface PostState {
   loadPostsDone: boolean;
   loadPostsError: null | unknown;
 }
+
+export interface FormVisible {
+  setOpenReply?: (x?: any) => void;
+}

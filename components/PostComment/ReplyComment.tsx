@@ -1,40 +1,44 @@
-import React from 'react';
-import { List, Space } from 'antd';
+import React, { useCallback, useState } from 'react';
+import { Space } from 'antd';
 import dayjs from 'dayjs';
 
+import CommentForm from '@components/PostComment/CommentForm';
 import { useAppSelector } from '@hooks/reduxHook';
-import { CommentListWrapper, CommentWrapper, CommentInfo, CommentBtn } from '@styles/postDetail/postComment';
+import { CommentInfo, ReplyCommentWrapper } from '@styles/postDetail/postComment';
 
 const ReplyComment = ({ responseTo }: { responseTo: number }) => {
   const { replyComment } = useAppSelector(state => state.post);
+  const [openReply, setOpenReply] = useState(false);
+
+  const onClickReplyOpen = useCallback(() => {
+    setOpenReply(prev => !prev);
+  }, []);
 
   return (
-    <>
-      <CommentListWrapper
-        itemLayout="horizontal"
-        dataSource={replyComment}
-        renderItem={(item: any) => (
-          <List.Item>
-            {responseTo === item.parent && (
-              <CommentWrapper
-                title={item.writer}
-                description={
-                  <CommentInfo>
-                    <div>{item.content}</div>
-                    <Space>
-                      <div>{dayjs(item?.created_at).format('YYYY.MM.DD')}</div>
-                      <div>답글쓰기</div>
-                      <CommentBtn>수정</CommentBtn>
-                      <CommentBtn>삭제</CommentBtn>
-                    </Space>
-                  </CommentInfo>
-                }
+    <ReplyCommentWrapper>
+      {replyComment.map(comment => (
+        <>
+          {responseTo === comment.parent && (
+            <>
+              <CommentInfo
+                actions={[
+                  <Space>
+                    <div>{dayjs(comment.created_at).format('YYYY.MM.DD')}</div>
+                    <button type="button" onClick={onClickReplyOpen} key="comment-basic-reply-to">
+                      답글쓰기
+                    </button>
+                  </Space>,
+                ]}
+                author={comment.writer}
+                content={<p>{comment.content}</p>}
               />
-            )}
-          </List.Item>
-        )}
-      />
-    </>
+
+              {openReply && <CommentForm setOpenReply={setOpenReply} />}
+            </>
+          )}
+        </>
+      ))}
+    </ReplyCommentWrapper>
   );
 };
 

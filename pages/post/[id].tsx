@@ -7,16 +7,18 @@ import Head from 'next/head';
 
 import AppLayout from '@components/AppLayout';
 import CommentForm from '@components/PostComment/CommentForm';
-import CommentList from '@components/PostComment/CommentList';
-import { useAppDispatch, useAppSelector } from '@hooks/reduxHook';
-import { PostWrapper, PostContent, PostWriteInfo, PostCommentInfo } from '@styles/postDetail/post';
+import SingleComment from '@components/PostComment/SingleComment';
+import ReplyComment from '@components/PostComment/ReplyComment';
 import { loadSinglePost } from '@reducers/postSlice';
+import { useAppDispatch, useAppSelector } from '@hooks/reduxHook';
+import { CommentWrapper } from '@styles/postDetail/postComment';
+import { PostWrapper, PostContent, PostWriteInfo, PostCommentInfo } from '@styles/postDetail/post';
 
 const Post = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { id } = router.query;
-  const { singlePost } = useAppSelector(state => state.post);
+  const { singlePost, firstComment } = useAppSelector(state => state.post);
 
   useEffect(() => {
     dispatch(loadSinglePost(id));
@@ -57,8 +59,21 @@ const Post = () => {
             <p>{singlePost?.content}</p>
           </PostContent>
 
+          <CommentWrapper>
+            <div>총 {singlePost?.comments.length}개의 댓글</div>
+            {firstComment &&
+              firstComment.map(comment => {
+                return (
+                  <>
+                    <SingleComment comment={comment} />
+                    <ReplyComment responseTo={comment.id} />
+                    <Divider />
+                  </>
+                );
+              })}
+          </CommentWrapper>
+
           <CommentForm />
-          <CommentList />
         </PostWrapper>
       </AppLayout>
     </>
