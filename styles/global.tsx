@@ -67,6 +67,14 @@ const style = css`
     -webkit-appearance: none;
     margin: 0;
   }
+
+  body {
+    -ms-overflow-style: none;
+  }
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const GlobalStyle = () => {

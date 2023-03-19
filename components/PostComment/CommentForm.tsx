@@ -1,20 +1,22 @@
 import React, { useCallback } from 'react';
 import { Form, Input, Row, Button } from 'antd';
 
-import { CommentFormWrapper } from '@styles/postDetail/postComment';
+import { FormVisible } from '@typings/db';
 
-const CommentForm = () => {
+const CommentForm = ({ setOpenReply }: FormVisible) => {
   const [form] = Form.useForm();
 
-  const onSubmitComment = useCallback((e: any) => {
+  const onSubmitComment = useCallback((e: { firstComment: string }) => {
     console.log(e);
+    form.resetFields();
+    setOpenReply && setOpenReply();
   }, []);
 
   return (
     <>
-      <CommentFormWrapper form={form} name="writeComment" onFinish={onSubmitComment}>
+      <Form form={form} name="writeComment" onFinish={onSubmitComment}>
         <Form.Item
-          name="comment"
+          name="firstComment"
           rules={[
             {
               required: true,
@@ -30,7 +32,7 @@ const CommentForm = () => {
             등록
           </Button>
         </Row>
-      </CommentFormWrapper>
+      </Form>
     </>
   );
 };

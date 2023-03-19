@@ -1,10 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import AppLayout from '@components/AppLayout';
 import PostList from '@components/PostList';
+import { loadPosts } from '@actions/post';
+import { useAppDispatch } from '@hooks/reduxHook';
 import { PostListHeader } from '@styles/postList';
 
 const Home = () => {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(loadPosts());
+  }, []);
+
   return (
     <>
       <AppLayout>

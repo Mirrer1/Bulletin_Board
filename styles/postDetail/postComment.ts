@@ -1,74 +1,76 @@
 import styled from '@emotion/styled';
-import { Form, List } from 'antd';
+import { Comment } from 'antd';
 
 import media from '@styles/media';
 
-export const CommentFormWrapper = styled(Form)`
-  margin-bottom: 2em;
-`;
-
-export const CommentListWrapper = styled(List)`
+export const CommentWrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.primary};
+  margin-bottom: 2em;
   padding: 1em 1.5em;
 
-  ${media.tablet} {
-    padding: 0.5em 1em;
-  }
-
-  ${media.mobile} {
-    padding: 1em;
-  }
-`;
-
-export const CommentWrapper = styled(List.Item.Meta)`
-  & > div > h4 {
+  & > :first-of-type {
     font-size: ${({ theme }) => theme.calcRem(16)};
-    font-weight: 700;
+  }
+
+  & > .ant-divider {
+    margin: 0;
   }
 
   ${media.tablet} {
-    & > div > h4 {
+    & > :first-of-type {
       font-size: ${({ theme }) => theme.calcRem(14)};
     }
   }
 
   ${media.mobile} {
-    & > div > h4 {
+    padding: 1em;
+
+    & > :first-of-type {
       font-size: ${({ theme }) => theme.calcRem(12)};
     }
   }
 `;
 
-export const CommentInfo = styled.div`
-  & > :first-of-type {
-    font-size: ${({ theme }) => theme.calcRem(14)};
-    color: #000000;
-    margin-bottom: 0.5em;
+export const CommentInfo = styled(Comment)`
+  & > div > div > div > .ant-comment-content-author-name {
+    font-size: ${({ theme }) => theme.calcRem(16)};
+    color: black;
+    font-weight: 700;
   }
 
   ${media.tablet} {
-    & > :first-of-type,
-    :last-child {
+    & > div > div > div > .ant-comment-content-author-name {
+      font-size: ${({ theme }) => theme.calcRem(14)};
+    }
+
+    & > div > div > .ant-comment-content-detail {
+      font-size: ${({ theme }) => theme.calcRem(12)};
+    }
+
+    & > div > div > .ant-comment-actions {
       font-size: ${({ theme }) => theme.calcRem(12)};
     }
   }
 
   ${media.mobile} {
-    & > :first-of-type,
-    :last-child {
+    & > div > div > div > .ant-comment-content-author-name {
+      font-size: ${({ theme }) => theme.calcRem(12)};
+    }
+
+    & > div > div > .ant-comment-content-detail {
+      font-size: ${({ theme }) => theme.calcRem(10)};
+    }
+
+    & > div > div > .ant-comment-actions {
       font-size: ${({ theme }) => theme.calcRem(10)};
     }
   }
 `;
 
-export const CommentBtn = styled.a`
-  font-size: ${({ theme }) => theme.calcRem(14)};
-
-  ${media.tablet} {
-    font-size: ${({ theme }) => theme.calcRem(12)};
-  }
+export const ReplyCommentWrapper = styled.div`
+  margin-left: 2em;
 
   ${media.mobile} {
-    font-size: ${({ theme }) => theme.calcRem(10)};
+    margin-left: 1em;
   }
 `;

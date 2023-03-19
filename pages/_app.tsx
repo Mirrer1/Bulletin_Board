@@ -6,8 +6,9 @@ import 'antd/dist/antd.css';
 
 import GlobalStyle from '@styles/global';
 import theme from '@styles/theme';
+import wrapper from '@store/configureStore';
 
-export default function App({ Component, pageProps }: AppProps) {
+const App = ({ Component, pageProps }: AppProps) => {
   return (
     <>
       <Head>
@@ -21,4 +22,6 @@ export default function App({ Component, pageProps }: AppProps) {
       </ThemeProvider>
     </>
   );
-}
+};
+
+export default wrapper.withRedux(App);
