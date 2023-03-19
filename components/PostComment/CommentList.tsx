@@ -1,44 +1,19 @@
 import React from 'react';
-import { List } from 'antd';
+import { List, Space } from 'antd';
+import dayjs from 'dayjs';
 
+import { useAppSelector } from '@hooks/reduxHook';
 import { CommentListWrapper, CommentWrapper, CommentInfo, CommentBtn } from '@styles/postDetail/postComment';
 
-interface DataType {
-  writer: string;
-  content: string;
-  created_at: string;
-}
-
 const CommentList = () => {
-  const data = [
-    {
-      writer: 'writer 1',
-      content: 'Ant Design, a design language for background applications, is refined by Ant UED Team',
-      created_at: '2023. 1. 1',
-    },
-    {
-      writer: 'writer 2',
-      content: 'Ant Design, a design language for background applications, is refined by Ant UED Team',
-      created_at: '2023. 1. 2',
-    },
-    {
-      writer: 'writer 3',
-      content: 'Ant Design, a design language for background applications, is refined by Ant UED Team',
-      created_at: '2023. 1. 3',
-    },
-    {
-      writer: 'writer 4',
-      content: 'Ant Design, a design language for background applications, is refined by Ant UED Team',
-      created_at: '2023. 1. 4',
-    },
-  ];
+  const { singlePost, firstComment, replyComment } = useAppSelector(state => state.post);
 
   return (
     <>
       <CommentListWrapper
-        header="총 4개의 댓글"
+        header={`총 ${singlePost?.comments.length}개의 댓글`}
         itemLayout="horizontal"
-        dataSource={data}
+        dataSource={firstComment}
         renderItem={(item: any) => (
           <List.Item
             actions={[
@@ -51,7 +26,10 @@ const CommentList = () => {
               description={
                 <CommentInfo>
                   <div>{item.content}</div>
-                  <div>{item.created_at}</div>
+                  <Space>
+                    <div>{dayjs(item?.created_at).format('YYYY.MM.DD')}</div>
+                    <div>답글쓰기</div>
+                  </Space>
                 </CommentInfo>
               }
             />

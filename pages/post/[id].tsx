@@ -1,18 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { Divider, Row } from 'antd';
 import { CommentOutlined } from '@ant-design/icons';
+import dayjs from 'dayjs';
 import Head from 'next/head';
 
 import AppLayout from '@components/AppLayout';
 import CommentForm from '@components/PostComment/CommentForm';
 import CommentList from '@components/PostComment/CommentList';
-
+import { useAppDispatch, useAppSelector } from '@hooks/reduxHook';
 import { PostWrapper, PostContent, PostWriteInfo, PostCommentInfo } from '@styles/postDetail/post';
+import { loadSinglePost } from '@reducers/postSlice';
 
 const Post = () => {
+  const dispatch = useAppDispatch();
   const router = useRouter();
   const { id } = router.query;
+  const { singlePost } = useAppSelector(state => state.post);
+
+  useEffect(() => {
+    dispatch(loadSinglePost(id));
+  }, []);
 
   return (
     <>
@@ -30,27 +38,23 @@ const Post = () => {
       <AppLayout>
         <PostWrapper>
           <PostContent>
-            <header>{id} London, Park Lane no.</header>
+            <header>{singlePost?.title}</header>
 
             <Row justify="space-between">
               <PostWriteInfo>
-                <div>Edward King</div>
-                <div>2023. 1. 29</div>
+                <div>{singlePost?.writer}</div>
+                <div>{dayjs(singlePost?.created_at).format('YYYY.MM.DD')}</div>
               </PostWriteInfo>
 
               <PostCommentInfo>
                 <CommentOutlined />
-                <div>댓글 1</div>
+                <div>댓글 {singlePost?.comments.length}</div>
               </PostCommentInfo>
             </Row>
 
             <Divider />
 
-            <p>
-              Park Lane no. London, Park Lane no. London, Park Lane no. London, Park Lane no.Park Lane no. London, Park
-              Lane no. London, Park Lane no. London, Park Lane no.Park Lane no. London, Park Lane no. London, Park Lane
-              no. London, Park Lane no.Park Lane no. London, Park Lane no. London, Park Lane no. London, Park Lane no.
-            </p>
+            <p>{singlePost?.content}</p>
           </PostContent>
 
           <CommentForm />

@@ -6,6 +6,9 @@ import { Comment, Post, PostState } from '@typings/db';
 
 const initialState: PostState = {
   mainPosts: [],
+  singlePost: null,
+  firstComment: [],
+  replyComment: [],
   loadPostsLoading: false,
   loadPostsDone: false,
   loadPostsError: null,
@@ -14,7 +17,13 @@ const initialState: PostState = {
 const postSlice = createSlice({
   name: 'post',
   initialState,
-  reducers: {},
+  reducers: {
+    loadSinglePost: (state, action) => {
+      state.singlePost = _.find(state.mainPosts, { id: +action.payload })!;
+      state.firstComment = _.filter(state.singlePost.comments, { parent: null });
+      state.replyComment = _.filter(state.singlePost.comments, 'parent');
+    },
+  },
   extraReducers: builder => {
     builder
       .addCase(loadPosts.pending, state => {
@@ -29,15 +38,17 @@ const postSlice = createSlice({
         // });
 
         const posts: Post[] = [];
-        action.payload.posts.forEach((v: Post) => {
-          posts.push({ id: v.id, content: v.content, writer: v.writer, comments: [] });
-        });
+        action.payload.posts.forEach((v: Post) => posts.push({ ...v, comments: [] }));
         state.mainPosts = posts;
+
+        // const firstComments = _.filter(action.payload.comments, { parent: null });
+        // const replyComments = _.filter(action.payload.comments, 'parent');
 
         action.payload.comments.forEach((v: Comment) => {
           const post = _.find(state.mainPosts, { id: v.postId });
-          post?.comments.push({ id: v.id });
+          post?.comments.push(v);
         });
+
         state.loadPostsLoading = false;
         state.loadPostsDone = true;
       })
@@ -48,4 +59,5 @@ const postSlice = createSlice({
   },
 });
 
+export const { loadSinglePost } = postSlice.actions;
 export default postSlice;
