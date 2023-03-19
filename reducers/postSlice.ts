@@ -32,17 +32,9 @@ const postSlice = createSlice({
         state.loadPostsError = null;
       })
       .addCase(loadPosts.fulfilled, (state, action) => {
-        // 테이블 아이템 갯수 확인용
-        // action.payload.posts.forEach((v: Post) => {
-        //   state.mainPosts.push({ id: v.id, content: v.content, writer: v.writer, comments: [] });
-        // });
-
         const posts: Post[] = [];
         action.payload.posts.forEach((v: Post) => posts.push({ ...v, comments: [] }));
         state.mainPosts = posts;
-
-        // const firstComments = _.filter(action.payload.comments, { parent: null });
-        // const replyComments = _.filter(action.payload.comments, 'parent');
 
         action.payload.comments.forEach((v: Comment) => {
           const post = _.find(state.mainPosts, { id: v.postId });
