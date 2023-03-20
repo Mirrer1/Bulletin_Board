@@ -3,7 +3,7 @@ import { Select } from 'antd';
 
 import media from '@styles/media';
 
-export const PostListWrapper = styled.section`
+export const PageWrapper = styled.section`
   padding: 2em 3em;
 
   & > div {
@@ -47,8 +47,6 @@ export const PostListWrapper = styled.section`
   }
 
   ${media.mobile} {
-    padding: 0.5em;
-
     & > :first-of-type {
       margin-bottom: 1em;
     }

@@ -4,7 +4,6 @@ import { Divider, Row } from 'antd';
 import { CommentOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import Head from 'next/head';
-import Link from 'next/link';
 
 import AppLayout from '@components/AppLayout';
 import CommentForm from '@components/PostComment/CommentForm';

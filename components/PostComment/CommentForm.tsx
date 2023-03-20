@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Form, Input, Row } from 'antd';
+import { Form, Input, Row, Col } from 'antd';
 
 import { FormVisible } from '@typings/db';
 import { PostBtn } from '@styles/postDetail/post';
