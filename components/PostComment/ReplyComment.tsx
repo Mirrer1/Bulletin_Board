@@ -17,7 +17,7 @@ const ReplyComment = ({ responseTo }: { responseTo: number }) => {
   return (
     <ReplyCommentWrapper>
       {replyComment.map(comment => (
-        <>
+        <div key={comment.id}>
           {responseTo === comment.parent && (
             <>
               <CommentInfo
@@ -36,7 +36,7 @@ const ReplyComment = ({ responseTo }: { responseTo: number }) => {
               {openReply && <CommentForm setOpenReply={setOpenReply} />}
             </>
           )}
-        </>
+        </div>
       ))}
     </ReplyCommentWrapper>
   );

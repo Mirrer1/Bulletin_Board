@@ -61,11 +61,11 @@ const Post = () => {
             {firstComment &&
               firstComment.map(comment => {
                 return (
-                  <>
+                  <div key={comment.id}>
                     <SingleComment comment={comment} />
                     <ReplyComment responseTo={comment.id} />
                     <Divider />
-                  </>
+                  </div>
                 );
               })}
           </CommentWrapper>
