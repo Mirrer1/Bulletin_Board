@@ -1,11 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Row } from 'antd';
+import { Row, Space } from 'antd';
+import { FormOutlined } from '@ant-design/icons';
 
 import AppLayout from '@components/AppLayout';
 import PostList from '@components/PostList';
 import { loadPosts } from '@actions/post';
 import { useAppDispatch } from '@hooks/reduxHook';
-import { PostListWrapper, ListSelectCount } from '@styles/postList';
+import { PageWrapper, ListSelectCount } from '@styles/postList';
+import { PostBtn } from '@styles/postDetail/post';
 
 const Home = () => {
   const dispatch = useAppDispatch();
@@ -41,7 +43,7 @@ const Home = () => {
   return (
     <>
       <AppLayout>
-        <PostListWrapper>
+        <PageWrapper>
           <div>
             <header>전체 게시글</header>
             <p>게시글을 클릭하면 자세한 내용을 확인할 수 있어요.</p>
@@ -49,11 +51,14 @@ const Home = () => {
 
           <div>
             <Row justify="end">
-              <ListSelectCount defaultValue={10} onChange={onChangeCount} options={postCountOptions} />
+              <Space style={{ marginBottom: '1em' }}>
+                <PostBtn icon={<FormOutlined />} type="primary" href="/posting" />
+                <ListSelectCount defaultValue={10} onChange={onChangeCount} options={postCountOptions} />
+              </Space>
             </Row>
             <PostList postCount={postCount} />
           </div>
-        </PostListWrapper>
+        </PageWrapper>
       </AppLayout>
     </>
   );

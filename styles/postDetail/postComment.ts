@@ -5,15 +5,19 @@ import media from '@styles/media';
 
 export const CommentWrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.primary};
-  margin-bottom: 2em;
   padding: 1em 1.5em;
+
+  & > div > .ant-divider {
+    margin: 0;
+  }
+
+  & > div:last-child > .ant-divider {
+    margin-top: 1.5em;
+    background-color: black;
+  }
 
   & > :first-of-type {
     font-size: ${({ theme }) => theme.calcRem(16)};
-  }
-
-  & > .ant-divider {
-    margin: 0;
   }
 
   ${media.tablet} {

@@ -1,23 +1,21 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Form, Input, Row, Col } from 'antd';
+import { Form, Input, Row, Col, Space } from 'antd';
 
-import { FormVisible } from '@typings/db';
 import { PostBtn } from '@styles/postDetail/post';
-import { CommentFormWrapper } from '@styles/postingForm';
+import { FormWrapper } from '@styles/postingForm';
 
-const CommentForm = ({ setOpenReply }: FormVisible) => {
+const PostingForm = () => {
   const [form] = Form.useForm();
-  const [inputSize, setInputSize] = useState<'middle' | 'small'>('middle');
+  const [inputSize, setInputSize] = useState<'large' | 'middle' | 'small'>('large');
 
-  const onSubmitComment = useCallback((value: { writer: string; password: string; firstComment: string } | unknown) => {
+  const onSubmitForm = useCallback((value: any) => {
     console.log(value);
-    form.resetFields();
-    setOpenReply && setOpenReply();
   }, []);
 
   useEffect(() => {
     function onResize() {
-      if (document.documentElement.clientWidth > 1024) setInputSize('middle');
+      if (document.documentElement.clientWidth > 1024) setInputSize('large');
+      else if (document.documentElement.clientWidth > 768) setInputSize('middle');
       else setInputSize('small');
     }
 
@@ -32,7 +30,7 @@ const CommentForm = ({ setOpenReply }: FormVisible) => {
 
   return (
     <>
-      <CommentFormWrapper form={form} name="writeComment" onFinish={onSubmitComment}>
+      <FormWrapper form={form} name="post" layout="vertical" requiredMark={false} onFinish={onSubmitForm}>
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
@@ -73,25 +71,53 @@ const CommentForm = ({ setOpenReply }: FormVisible) => {
         </Row>
 
         <Form.Item
-          name="firstComment"
+          name="title"
           rules={[
             {
+              type: 'string',
               required: true,
-              message: '댓글을 입력하세요.',
+              message: '제목을 입력해주세요.',
             },
           ]}
         >
-          <Input.TextArea placeholder="댓글을 입력하세요." size={inputSize} showCount maxLength={100} rows={2} />
+          <Input placeholder="제목을 입력해주세요." size={inputSize} minLength={1} maxLength={40} />
+        </Form.Item>
+
+        <Form.Item
+          name="content"
+          rules={[
+            {
+              type: 'string',
+              required: true,
+              message: '내용을 입력해주세요.',
+            },
+          ]}
+        >
+          <Input.TextArea
+            placeholder="내용을 입력해주세요."
+            size={inputSize}
+            allowClear
+            showCount
+            minLength={1}
+            maxLength={2000}
+            autoSize={{
+              minRows: 15,
+              maxRows: 35,
+            }}
+          />
         </Form.Item>
 
         <Row justify="end">
-          <PostBtn type="primary" htmlType="submit">
-            등록
-          </PostBtn>
+          <Space>
+            <PostBtn href="/">취소</PostBtn>
+            <PostBtn type="primary" htmlType="submit">
+              작성
+            </PostBtn>
+          </Space>
         </Row>
-      </CommentFormWrapper>
+      </FormWrapper>
     </>
   );
 };
 
-export default CommentForm;
+export default PostingForm;
