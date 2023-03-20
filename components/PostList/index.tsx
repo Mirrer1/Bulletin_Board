@@ -8,7 +8,7 @@ import { Post, Comment } from '@typings/db';
 import { useAppSelector } from '@hooks/reduxHook';
 import { ListContentHeader, ListContentInfo } from '@styles/postList';
 
-const PostList = () => {
+const PostList = ({ postCount }: { postCount: number }) => {
   const { mainPosts } = useAppSelector(state => state.post);
   const [textSize, setTextSize] = useState(40);
 
@@ -65,7 +65,7 @@ const PostList = () => {
       <Table
         columns={columns}
         dataSource={mainPosts}
-        pagination={{ pageSize: 10 }}
+        pagination={{ pageSize: postCount }}
         rowKey={record => record.id}
         onRow={onRow}
       />

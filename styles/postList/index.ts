@@ -1,13 +1,17 @@
 import styled from '@emotion/styled';
+import { Select } from 'antd';
 
 import media from '@styles/media';
 
-export const PostListHeader = styled.section`
+export const PostListWrapper = styled.section`
   padding: 2em 3em;
 
   & > div {
     background-color: ${({ theme }) => theme.colors.primary};
     padding: 1em 1.5em;
+  }
+
+  & > :first-of-type {
     margin-bottom: 2em;
   }
 
@@ -27,6 +31,9 @@ export const PostListHeader = styled.section`
 
     & > div {
       padding: 0.5em 1em;
+    }
+
+    & > :first-of-type {
       margin-bottom: 1.5em;
     }
 
@@ -42,8 +49,8 @@ export const PostListHeader = styled.section`
   ${media.mobile} {
     padding: 0.5em;
 
-    & > div {
-      margin-bottom: 1.5em;
+    & > :first-of-type {
+      margin-bottom: 1em;
     }
 
     & > div > header {
@@ -53,6 +60,18 @@ export const PostListHeader = styled.section`
     & > div > p {
       font-size: ${({ theme }) => theme.calcRem(10)};
     }
+  }
+`;
+
+export const ListSelectCount = styled(Select)`
+  margin-bottom: 1em;
+
+  ${media.tablet} {
+    font-size: ${({ theme }) => theme.calcRem(12)};
+  }
+
+  ${media.mobile} {
+    font-size: ${({ theme }) => theme.calcRem(10)};
   }
 `;
 
