@@ -32,6 +32,7 @@ const Post = () => {
         <meta name="description" content={singlePost?.content} />
         <meta property="og:title" content={`${singlePost?.writer}님의 게시글`} />
         <meta property="og:description" content={singlePost?.content} />
+        <meta property="og:image" content="https://ifh.cc/g/vWmZf3.png" />
         <meta property="og:url" content={`http://localhost:3010/post/${id}`} />
       </Head>
 
