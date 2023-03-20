@@ -1,7 +1,8 @@
 import React, { useCallback } from 'react';
-import { Form, Input, Row, Button } from 'antd';
+import { Form, Input, Row } from 'antd';
 
 import { FormVisible } from '@typings/db';
+import { PostBtn } from '@styles/postDetail/post';
 
 const CommentForm = ({ setOpenReply }: FormVisible) => {
   const [form] = Form.useForm();
@@ -28,9 +29,9 @@ const CommentForm = ({ setOpenReply }: FormVisible) => {
         </Form.Item>
 
         <Row justify="end">
-          <Button type="primary" htmlType="submit">
+          <PostBtn type="primary" htmlType="submit">
             등록
-          </Button>
+          </PostBtn>
         </Row>
       </Form>
     </>

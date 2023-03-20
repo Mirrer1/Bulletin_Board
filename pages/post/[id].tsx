@@ -4,6 +4,7 @@ import { Divider, Row } from 'antd';
 import { CommentOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import Head from 'next/head';
+import Link from 'next/link';
 
 import AppLayout from '@components/AppLayout';
 import CommentForm from '@components/PostComment/CommentForm';
@@ -12,7 +13,7 @@ import ReplyComment from '@components/PostComment/ReplyComment';
 import { loadSinglePost } from '@reducers/postSlice';
 import { useAppDispatch, useAppSelector } from '@hooks/reduxHook';
 import { CommentWrapper } from '@styles/postDetail/postComment';
-import { PostWrapper, PostContent, PostWriteInfo, PostCommentInfo } from '@styles/postDetail/post';
+import { PostWrapper, PostBtn, PostContent, PostWriteInfo, PostCommentInfo } from '@styles/postDetail/post';
 
 const Post = () => {
   const dispatch = useAppDispatch();
@@ -36,6 +37,12 @@ const Post = () => {
 
       <AppLayout>
         <PostWrapper>
+          <Row justify="end">
+            <PostBtn type="primary" header="true" href="/">
+              목록
+            </PostBtn>
+          </Row>
+
           <PostContent>
             <header>{singlePost?.title}</header>
 

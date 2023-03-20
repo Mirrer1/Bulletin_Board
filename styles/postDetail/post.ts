@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Col } from 'antd';
+import { Col, Button } from 'antd';
 
 import media from '@styles/media';
 
@@ -12,6 +12,23 @@ export const PostWrapper = styled.section`
 
   ${media.mobile} {
     padding: 1em;
+  }
+`;
+
+export const PostBtn = styled(Button)<{ header?: string }>`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 6em;
+  margin-bottom: ${props => props.header && '1em'};
+
+  ${media.tablet} {
+    width: 5em;
+  }
+
+  ${media.mobile} {
+    width: 4em;
+    margin-bottom: ${props => props.header && '0.5em'};
   }
 `;
 
