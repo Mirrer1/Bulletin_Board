@@ -62,8 +62,6 @@ export const PageWrapper = styled.section`
 `;
 
 export const ListSelectCount = styled(Select)`
-  margin-bottom: 1em;
-
   ${media.tablet} {
     font-size: ${({ theme }) => theme.calcRem(12)};
   }

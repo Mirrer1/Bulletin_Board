@@ -23,10 +23,12 @@ export const PostBtn = styled(Button)<{ header?: string }>`
   margin-bottom: ${props => props.header && '1em'};
 
   ${media.tablet} {
+    font-size: ${({ theme }) => theme.calcRem(12)};
     width: 5em;
   }
 
   ${media.mobile} {
+    font-size: ${({ theme }) => theme.calcRem(10)};
     width: 4em;
     margin-bottom: ${props => props.header && '0.5em'};
   }

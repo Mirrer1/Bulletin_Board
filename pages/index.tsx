@@ -51,8 +51,8 @@ const Home = () => {
 
           <div>
             <Row justify="end">
-              <Space>
-                <PostBtn icon={<FormOutlined />} type="primary" header="true" href="/posting" />
+              <Space style={{ marginBottom: '1em' }}>
+                <PostBtn icon={<FormOutlined />} type="primary" href="/posting" />
                 <ListSelectCount defaultValue={10} onChange={onChangeCount} options={postCountOptions} />
               </Space>
             </Row>

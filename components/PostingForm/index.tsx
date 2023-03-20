@@ -1,18 +1,36 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Form, Input, Row, Col, Space } from 'antd';
 
 import { PostBtn } from '@styles/postDetail/post';
+import { FormWrapper } from '@styles/postingForm';
 
 const PostingForm = () => {
   const [form] = Form.useForm();
+  const [inputSize, setInputSize] = useState<'large' | 'middle' | 'small'>('large');
 
   const onSubmitForm = useCallback((value: any) => {
     console.log(value);
   }, []);
 
+  useEffect(() => {
+    function onResize() {
+      if (document.documentElement.clientWidth > 1024) setInputSize('large');
+      else if (document.documentElement.clientWidth > 768) setInputSize('middle');
+      else setInputSize('small');
+    }
+
+    window.addEventListener('load', onResize);
+    window.addEventListener('resize', onResize);
+
+    return () => {
+      window.removeEventListener('load', onResize);
+      window.removeEventListener('resize', onResize);
+    };
+  }, []);
+
   return (
     <>
-      <Form form={form} name="post" layout="vertical" requiredMark={false} onFinish={onSubmitForm}>
+      <FormWrapper form={form} name="post" layout="vertical" requiredMark={false} onFinish={onSubmitForm}>
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
@@ -25,7 +43,7 @@ const PostingForm = () => {
                 },
               ]}
             >
-              <Input placeholder="작성자" size="large" minLength={1} maxLength={10} />
+              <Input placeholder="작성자" size={inputSize} minLength={1} maxLength={10} />
             </Form.Item>
           </Col>
 
@@ -42,8 +60,9 @@ const PostingForm = () => {
               ]}
             >
               <Input
+                type="password"
+                size={inputSize}
                 placeholder="비밀번호 (16자 이하의 영문 + 숫자 + 특수기호)"
-                size="large"
                 minLength={1}
                 maxLength={16}
               />
@@ -61,7 +80,7 @@ const PostingForm = () => {
             },
           ]}
         >
-          <Input placeholder="제목을 입력해주세요." size="large" minLength={1} maxLength={40} />
+          <Input placeholder="제목을 입력해주세요." size={inputSize} minLength={1} maxLength={40} />
         </Form.Item>
 
         <Form.Item
@@ -76,7 +95,7 @@ const PostingForm = () => {
         >
           <Input.TextArea
             placeholder="내용을 입력해주세요."
-            size="large"
+            size={inputSize}
             allowClear
             showCount
             minLength={1}
@@ -96,7 +115,7 @@ const PostingForm = () => {
             </PostBtn>
           </Space>
         </Row>
-      </Form>
+      </FormWrapper>
     </>
   );
 };
