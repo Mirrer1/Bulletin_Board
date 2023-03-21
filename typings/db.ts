@@ -30,6 +30,9 @@ export interface PostState {
   loadPostsLoading: boolean;
   loadPostsDone: boolean;
   loadPostsError: null | unknown;
+  editPostLoading: boolean;
+  editPostDone: boolean;
+  editPostError: null | unknown;
 }
 
 export interface FormVisible {

@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Row, Space } from 'antd';
 import { FormOutlined } from '@ant-design/icons';
+import Router from 'next/router';
 
 import AppLayout from '@components/AppLayout';
 import PostList from '@components/PostList';
@@ -32,8 +33,12 @@ const Home = () => {
     },
   ];
 
-  const onChangeCount = useCallback((value: any) => {
+  const onChangeCount = useCallback(value => {
     setPostCount(value);
+  }, []);
+
+  const onClickPosting = useCallback(() => {
+    Router.push('/posting');
   }, []);
 
   useEffect(() => {
@@ -52,7 +57,7 @@ const Home = () => {
           <div>
             <Row justify="end">
               <Space style={{ marginBottom: '1em' }}>
-                <PostBtn icon={<FormOutlined />} type="primary" href="/posting" />
+                <PostBtn icon={<FormOutlined />} type="primary" onClick={onClickPosting} />
                 <ListSelectCount defaultValue={10} onChange={onChangeCount} options={postCountOptions} />
               </Space>
             </Row>

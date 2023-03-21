@@ -1,17 +1,33 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Form, Input, Row, Col, Space } from 'antd';
+import Router from 'next/router';
 
-import { useAppSelector } from '@hooks/reduxHook';
+import { useAppDispatch, useAppSelector } from '@hooks/reduxHook';
+import { initializeState } from '@reducers/postSlice';
+import { modifyPost } from '@actions/post';
 import { PostBtn } from '@styles/postDetail/post';
 import { FormWrapper } from '@styles/postingForm';
 
 const PostingForm = () => {
+  const dispatch = useAppDispatch();
   const [form] = Form.useForm();
-  const { editPost } = useAppSelector(state => state.post);
+  const { editPost, editPostLoading } = useAppSelector(state => state.post);
   const [inputSize, setInputSize] = useState<'large' | 'middle' | 'small'>('large');
 
+  const onClickCancel = useCallback(() => {
+    dispatch(initializeState());
+    Router.push('/');
+  }, []);
+
   const onSubmitForm = useCallback((value: any) => {
-    console.log(value);
+    dispatch(
+      modifyPost({
+        ...value,
+        id: editPost?.id,
+        created_at: editPost?.created_at,
+        updated_at: new Date().toISOString(),
+      }),
+    );
   }, []);
 
   useEffect(() => {
@@ -67,7 +83,7 @@ const PostingForm = () => {
                   type: 'string',
                   required: true,
                   message: '비밀번호 형식이 올바르지 않습니다.',
-                  pattern: new RegExp(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{1,16}$/),
+                  // pattern: new RegExp(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{1,16}$/),
                 },
               ]}
             >
@@ -121,8 +137,8 @@ const PostingForm = () => {
 
         <Row justify="end">
           <Space>
-            <PostBtn href="/">취소</PostBtn>
-            <PostBtn type="primary" htmlType="submit">
+            <PostBtn onClick={onClickCancel}>취소</PostBtn>
+            <PostBtn type="primary" htmlType="submit" loading={editPostLoading}>
               작성
             </PostBtn>
           </Space>

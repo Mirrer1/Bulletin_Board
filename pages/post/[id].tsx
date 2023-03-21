@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { useRouter } from 'next/router';
+import Router, { useRouter } from 'next/router';
 import { Divider, Row, Space } from 'antd';
 import { CommentOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
@@ -30,6 +30,10 @@ const Post = () => {
     dispatch(loadEditPost(id));
   }, []);
 
+  const onClickList = useCallback(() => {
+    Router.push('/');
+  }, []);
+
   return (
     <>
       <Head>
@@ -45,7 +49,7 @@ const Post = () => {
         <PostWrapper>
           <Row justify="end">
             <Space>
-              <PostBtn header="true" href="/">
+              <PostBtn header="true" onClick={onClickList}>
                 목록
               </PostBtn>
 
