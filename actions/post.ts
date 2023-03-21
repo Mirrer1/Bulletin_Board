@@ -32,6 +32,24 @@ export const loadSinglePost = createAsyncThunk('post/loadSinglePost', async (dat
   return response;
 });
 
+export const postValidation = createAsyncThunk(
+  'post/postValidation',
+  async (data: { id: number | undefined; password: string }, thunkAPI) => {
+    try {
+      const response = await axios.get('/db');
+      const post = _.find(response.data.posts, { id: data.id });
+
+      if (post.password === data.password) Router.push('/posting');
+      else message.warning('비밀번호가 일치하지 않습니다.');
+
+      return data.password;
+    } catch (error: any) {
+      message.error('게시글이 존재하지 않습니다.');
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
 export const modifyPost = createAsyncThunk('post/editPost', async (data: Post, thunkAPI) => {
   try {
     const response = await axios.patch(`/posts/${data.id}`, data);

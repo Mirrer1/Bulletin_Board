@@ -25,7 +25,7 @@ const Post = () => {
 
   const onClickEditPost = useCallback(() => {
     dispatch(showCheckModal());
-    dispatch(loadEditPost(id));
+    dispatch(loadEditPost());
   }, []);
 
   const onClickList = useCallback(() => {

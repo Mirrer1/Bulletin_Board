@@ -3,21 +3,21 @@ import Router from 'next/router';
 import { Modal, message } from 'antd';
 import { KeyOutlined } from '@ant-design/icons';
 
-import { useAppDispatch, useAppSelector } from '@hooks/reduxHook';
+import { postValidation } from '@actions/post';
 import { hideCheckModal } from '@reducers/postSlice';
+import { useAppDispatch, useAppSelector } from '@hooks/reduxHook';
 import { PasswordModalText, PasswordModalInput } from '@styles/modal/checkPassword';
 
 const CheckPassword = () => {
   const dispatch = useAppDispatch();
-  const { checkModalVisible, editPost } = useAppSelector(state => state.post);
+  const { checkModalVisible, editPost, postValidationLoading } = useAppSelector(state => state.post);
 
   const onClickCancel = useCallback(() => {
     dispatch(hideCheckModal());
   }, []);
 
-  const onSearch = useCallback((value: string) => {
-    if (value === editPost?.password) Router.push('/posting');
-    else message.warning('비밀번호가 일치하지 않습니다.');
+  const onSearch = useCallback(value => {
+    dispatch(postValidation({ id: editPost?.id, password: value }));
   }, []);
 
   return (
@@ -35,6 +35,7 @@ const CheckPassword = () => {
           enterButton="확인"
           minLength={1}
           maxLength={16}
+          loading={postValidationLoading}
         />
       </Modal>
     </>

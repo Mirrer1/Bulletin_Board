@@ -33,6 +33,9 @@ export interface PostState {
   loadSinglePostLoading: boolean;
   loadSinglePostDone: boolean;
   loadSinglePostError: null | unknown;
+  postValidationLoading: boolean;
+  postValidationDone: boolean;
+  postValidationError: null | unknown;
   editPostLoading: boolean;
   editPostDone: boolean;
   editPostError: null | unknown;

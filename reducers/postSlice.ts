@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import _ from 'lodash';
 
-import { modifyPost, loadPosts, loadSinglePost } from '@actions/post';
+import { modifyPost, loadPosts, loadSinglePost, postValidation } from '@actions/post';
 import { PostState } from '@typings/db';
 
 const initialState: PostState = {
@@ -17,6 +17,9 @@ const initialState: PostState = {
   loadSinglePostLoading: false,
   loadSinglePostDone: false,
   loadSinglePostError: null,
+  postValidationLoading: false,
+  postValidationDone: false,
+  postValidationError: null,
   editPostLoading: false,
   editPostDone: false,
   editPostError: null,
@@ -30,8 +33,8 @@ const postSlice = createSlice({
       state.editPost = null;
       state.checkModalVisible = false;
     },
-    loadEditPost: (state, action) => {
-      state.editPost = _.find(state.mainPosts, { id: +action.payload })!;
+    loadEditPost: state => {
+      state.editPost = state.singlePost;
     },
     showCheckModal: state => {
       state.checkModalVisible = true;
@@ -71,6 +74,21 @@ const postSlice = createSlice({
       .addCase(loadSinglePost.rejected, (state, action) => {
         state.loadSinglePostLoading = false;
         state.loadSinglePostError = action.payload;
+      })
+      .addCase(postValidation.pending, state => {
+        state.postValidationLoading = true;
+        state.postValidationDone = false;
+        state.postValidationError = null;
+      })
+      .addCase(postValidation.fulfilled, (state, action) => {
+        state.editPost!.password = action.payload;
+        state.checkModalVisible = false;
+        state.postValidationLoading = false;
+        state.postValidationDone = true;
+      })
+      .addCase(postValidation.rejected, (state, action) => {
+        state.postValidationLoading = false;
+        state.postValidationError = action.payload;
       })
       .addCase(modifyPost.pending, state => {
         state.editPostLoading = true;
