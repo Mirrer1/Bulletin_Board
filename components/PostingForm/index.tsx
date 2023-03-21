@@ -1,11 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Form, Input, Row, Col, Space } from 'antd';
 
+import { useAppSelector } from '@hooks/reduxHook';
 import { PostBtn } from '@styles/postDetail/post';
 import { FormWrapper } from '@styles/postingForm';
 
 const PostingForm = () => {
   const [form] = Form.useForm();
+  const { editPost } = useAppSelector(state => state.post);
   const [inputSize, setInputSize] = useState<'large' | 'middle' | 'small'>('large');
 
   const onSubmitForm = useCallback((value: any) => {
@@ -27,6 +29,16 @@ const PostingForm = () => {
       window.removeEventListener('resize', onResize);
     };
   }, []);
+
+  useEffect(() => {
+    if (editPost)
+      form.setFieldsValue({
+        writer: editPost?.writer,
+        password: editPost?.password,
+        title: editPost?.title,
+        content: editPost?.content,
+      });
+  }, [form, editPost]);
 
   return (
     <>

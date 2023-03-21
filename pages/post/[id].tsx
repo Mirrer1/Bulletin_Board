@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { Divider, Row } from 'antd';
+import { Divider, Row, Space } from 'antd';
 import { CommentOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import Head from 'next/head';
@@ -9,19 +9,25 @@ import AppLayout from '@components/AppLayout';
 import CommentForm from '@components/PostComment/CommentForm';
 import SingleComment from '@components/PostComment/SingleComment';
 import ReplyComment from '@components/PostComment/ReplyComment';
-import { loadSinglePost } from '@reducers/postSlice';
+import { loadEditPost, loadSinglePost, showCheckModal } from '@reducers/postSlice';
 import { useAppDispatch, useAppSelector } from '@hooks/reduxHook';
 import { CommentWrapper } from '@styles/postDetail/postComment';
 import { PostWrapper, PostBtn, PostContent, PostWriteInfo, PostCommentInfo } from '@styles/postDetail/post';
+import CheckPassword from '@components/Modal/CheckPassword';
 
 const Post = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { id } = router.query;
-  const { singlePost, firstComment } = useAppSelector(state => state.post);
+  const { singlePost, firstComment, checkModalVisible } = useAppSelector(state => state.post);
 
   useEffect(() => {
     dispatch(loadSinglePost(id));
+  }, []);
+
+  const onClickEditPost = useCallback(() => {
+    dispatch(showCheckModal());
+    dispatch(loadEditPost(id));
   }, []);
 
   return (
@@ -38,9 +44,19 @@ const Post = () => {
       <AppLayout>
         <PostWrapper>
           <Row justify="end">
-            <PostBtn type="primary" header="true" href="/">
-              목록
-            </PostBtn>
+            <Space>
+              <PostBtn header="true" href="/">
+                목록
+              </PostBtn>
+
+              <PostBtn type="primary" header="true" onClick={onClickEditPost}>
+                수정
+              </PostBtn>
+
+              <PostBtn type="primary" header="true">
+                삭제
+              </PostBtn>
+            </Space>
           </Row>
 
           <PostContent>
@@ -79,6 +95,8 @@ const Post = () => {
 
           <CommentForm />
         </PostWrapper>
+
+        {checkModalVisible && <CheckPassword />}
       </AppLayout>
     </>
   );

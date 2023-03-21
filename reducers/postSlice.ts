@@ -7,8 +7,10 @@ import { Comment, Post, PostState } from '@typings/db';
 const initialState: PostState = {
   mainPosts: [],
   singlePost: null,
+  editPost: null,
   firstComment: [],
   replyComment: [],
+  checkModalVisible: false,
   loadPostsLoading: false,
   loadPostsDone: false,
   loadPostsError: null,
@@ -22,6 +24,15 @@ const postSlice = createSlice({
       state.singlePost = _.find(state.mainPosts, { id: +action.payload })!;
       state.firstComment = _.filter(state.singlePost.comments, { parent: null });
       state.replyComment = _.filter(state.singlePost.comments, 'parent');
+    },
+    loadEditPost: (state, action) => {
+      state.editPost = _.find(state.mainPosts, { id: +action.payload })!;
+    },
+    showCheckModal: state => {
+      state.checkModalVisible = true;
+    },
+    hideCheckModal: state => {
+      state.checkModalVisible = false;
     },
   },
   extraReducers: builder => {
@@ -51,5 +62,5 @@ const postSlice = createSlice({
   },
 });
 
-export const { loadSinglePost } = postSlice.actions;
+export const { loadSinglePost, loadEditPost, showCheckModal, hideCheckModal } = postSlice.actions;
 export default postSlice;

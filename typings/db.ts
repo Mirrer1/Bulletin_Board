@@ -23,8 +23,10 @@ export interface Post {
 export interface PostState {
   mainPosts: Post[];
   singlePost: Post | null;
+  editPost: Post | null;
   firstComment: Comment[];
   replyComment: Comment[];
+  checkModalVisible: boolean;
   loadPostsLoading: boolean;
   loadPostsDone: boolean;
   loadPostsError: null | unknown;
