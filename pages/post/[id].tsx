@@ -9,21 +9,19 @@ import AppLayout from '@components/AppLayout';
 import CommentForm from '@components/PostComment/CommentForm';
 import SingleComment from '@components/PostComment/SingleComment';
 import ReplyComment from '@components/PostComment/ReplyComment';
-import { loadEditPost, loadSinglePost, showCheckModal } from '@reducers/postSlice';
+import CheckPassword from '@components/Modal/CheckPassword';
+
+import { loadSinglePost } from '@actions/post';
+import { loadEditPost, showCheckModal } from '@reducers/postSlice';
 import { useAppDispatch, useAppSelector } from '@hooks/reduxHook';
 import { CommentWrapper } from '@styles/postDetail/postComment';
 import { PostWrapper, PostBtn, PostContent, PostWriteInfo, PostCommentInfo } from '@styles/postDetail/post';
-import CheckPassword from '@components/Modal/CheckPassword';
 
 const Post = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { id } = router.query;
   const { singlePost, firstComment, checkModalVisible } = useAppSelector(state => state.post);
-
-  useEffect(() => {
-    dispatch(loadSinglePost(id));
-  }, []);
 
   const onClickEditPost = useCallback(() => {
     dispatch(showCheckModal());
@@ -32,6 +30,10 @@ const Post = () => {
 
   const onClickList = useCallback(() => {
     Router.push('/');
+  }, []);
+
+  useEffect(() => {
+    dispatch(loadSinglePost(id));
   }, []);
 
   return (

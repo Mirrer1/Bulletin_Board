@@ -1,12 +1,12 @@
 export interface Comment {
   id: number;
-  postId: number;
-  parent: number | null;
-  content: string;
-  writer: string;
-  password: string;
-  created_at: string;
-  updated_at: string | null;
+  postId?: number;
+  parent?: number | null;
+  content?: string;
+  writer?: string;
+  password?: string;
+  created_at?: string;
+  updated_at?: string | null;
 }
 
 export interface Post {
@@ -30,6 +30,9 @@ export interface PostState {
   loadPostsLoading: boolean;
   loadPostsDone: boolean;
   loadPostsError: null | unknown;
+  loadSinglePostLoading: boolean;
+  loadSinglePostDone: boolean;
+  loadSinglePostError: null | unknown;
   editPostLoading: boolean;
   editPostDone: boolean;
   editPostError: null | unknown;

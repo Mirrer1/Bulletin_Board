@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import _ from 'lodash';
 
-import { modifyPost, loadPosts } from '@actions/post';
-import { Comment, Post, PostState } from '@typings/db';
+import { modifyPost, loadPosts, loadSinglePost } from '@actions/post';
+import { PostState } from '@typings/db';
 
 const initialState: PostState = {
   mainPosts: [],
@@ -14,6 +14,9 @@ const initialState: PostState = {
   loadPostsLoading: false,
   loadPostsDone: false,
   loadPostsError: null,
+  loadSinglePostLoading: false,
+  loadSinglePostDone: false,
+  loadSinglePostError: null,
   editPostLoading: false,
   editPostDone: false,
   editPostError: null,
@@ -26,11 +29,6 @@ const postSlice = createSlice({
     initializeState: state => {
       state.editPost = null;
       state.checkModalVisible = false;
-    },
-    loadSinglePost: (state, action) => {
-      state.singlePost = _.find(state.mainPosts, { id: +action.payload })!;
-      state.firstComment = _.filter(state.singlePost.comments, { parent: null });
-      state.replyComment = _.filter(state.singlePost.comments, 'parent');
     },
     loadEditPost: (state, action) => {
       state.editPost = _.find(state.mainPosts, { id: +action.payload })!;
@@ -50,21 +48,29 @@ const postSlice = createSlice({
         state.loadPostsError = null;
       })
       .addCase(loadPosts.fulfilled, (state, action) => {
-        const posts: Post[] = [];
-        action.payload.posts.forEach((v: Post) => posts.push({ ...v, comments: [] }));
-        state.mainPosts = posts;
-
-        action.payload.comments.forEach((v: Comment) => {
-          const post = _.find(state.mainPosts, { id: v.postId });
-          post?.comments.push(v);
-        });
-
+        state.mainPosts = action.payload;
         state.loadPostsLoading = false;
         state.loadPostsDone = true;
       })
       .addCase(loadPosts.rejected, (state, action) => {
         state.loadPostsLoading = false;
         state.loadPostsError = action.payload;
+      })
+      .addCase(loadSinglePost.pending, state => {
+        state.loadSinglePostLoading = true;
+        state.loadSinglePostDone = false;
+        state.loadSinglePostError = null;
+      })
+      .addCase(loadSinglePost.fulfilled, (state, action) => {
+        state.singlePost = action.payload;
+        state.firstComment = _.filter(state.singlePost?.comments, { parent: null });
+        state.replyComment = _.filter(state.singlePost?.comments, 'parent');
+        state.loadSinglePostLoading = false;
+        state.loadSinglePostDone = true;
+      })
+      .addCase(loadSinglePost.rejected, (state, action) => {
+        state.loadSinglePostLoading = false;
+        state.loadSinglePostError = action.payload;
       })
       .addCase(modifyPost.pending, state => {
         state.editPostLoading = true;
@@ -82,5 +88,5 @@ const postSlice = createSlice({
   },
 });
 
-export const { initializeState, loadSinglePost, loadEditPost, showCheckModal, hideCheckModal } = postSlice.actions;
+export const { initializeState, loadEditPost, showCheckModal, hideCheckModal } = postSlice.actions;
 export default postSlice;
