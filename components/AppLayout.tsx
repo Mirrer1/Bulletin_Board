@@ -1,6 +1,5 @@
-import React, { ReactNode, useCallback } from 'react';
+import React, { ReactNode } from 'react';
 import { FormOutlined } from '@ant-design/icons';
-import Router from 'next/router';
 
 import { LayoutWrapper, LayoutLogo } from '@styles/applayout';
 
@@ -9,14 +8,10 @@ interface Props {
 }
 
 const AppLayout = ({ children }: Props) => {
-  const onClickLogo = useCallback(() => {
-    Router.push('/');
-  }, []);
-
   return (
     <>
       <LayoutWrapper>
-        <LayoutLogo onClick={onClickLogo}>
+        <LayoutLogo>
           <FormOutlined />
           <p>NOTICE BOARD</p>
         </LayoutLogo>

@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
-import Router from 'next/router';
-import { Modal, message } from 'antd';
+import { Modal } from 'antd';
 import { KeyOutlined } from '@ant-design/icons';
 
 import { postValidation } from '@actions/post';
@@ -10,14 +9,15 @@ import { PasswordModalText, PasswordModalInput } from '@styles/modal/checkPasswo
 
 const CheckPassword = () => {
   const dispatch = useAppDispatch();
-  const { checkModalVisible, editPost, postValidationLoading } = useAppSelector(state => state.post);
+  const { checkModalVisible, editPost, deletePost, postValidationLoading } = useAppSelector(state => state.post);
 
   const onClickCancel = useCallback(() => {
     dispatch(hideCheckModal());
   }, []);
 
   const onSearch = useCallback(value => {
-    dispatch(postValidation({ id: editPost?.id, password: value }));
+    if (editPost) dispatch(postValidation({ type: 'edit', id: editPost?.id, password: value }));
+    else if (deletePost) dispatch(postValidation({ type: 'delete', id: deletePost?.id, password: value }));
   }, []);
 
   return (

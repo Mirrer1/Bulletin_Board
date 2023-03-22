@@ -12,24 +12,28 @@ import ReplyComment from '@components/PostComment/ReplyComment';
 import CheckPassword from '@components/Modal/CheckPassword';
 
 import { loadSinglePost } from '@actions/post';
-import { loadEditPost, showCheckModal } from '@reducers/postSlice';
+import { showCheckModal } from '@reducers/postSlice';
 import { useAppDispatch, useAppSelector } from '@hooks/reduxHook';
 import { CommentWrapper } from '@styles/postDetail/postComment';
 import { PostWrapper, PostBtn, PostContent, PostWriteInfo, PostCommentInfo } from '@styles/postDetail/post';
+import DeletePost from '@components/Modal/DeletePost';
 
 const Post = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { id } = router.query;
-  const { singlePost, firstComment, checkModalVisible } = useAppSelector(state => state.post);
-
-  const onClickEditPost = useCallback(() => {
-    dispatch(showCheckModal());
-    dispatch(loadEditPost());
-  }, []);
+  const { singlePost, firstComment, checkModalVisible, deleteModalVisible } = useAppSelector(state => state.post);
 
   const onClickList = useCallback(() => {
     Router.push('/');
+  }, []);
+
+  const onClickEditPost = useCallback(() => {
+    dispatch(showCheckModal({ type: 'edit' }));
+  }, []);
+
+  const onClickDeletePost = useCallback(() => {
+    dispatch(showCheckModal({ type: 'delete' }));
   }, []);
 
   useEffect(() => {
@@ -59,7 +63,7 @@ const Post = () => {
                 수정
               </PostBtn>
 
-              <PostBtn type="primary" header="true">
+              <PostBtn type="primary" header="true" onClick={onClickDeletePost}>
                 삭제
               </PostBtn>
             </Space>
@@ -103,6 +107,7 @@ const Post = () => {
         </PostWrapper>
 
         {checkModalVisible && <CheckPassword />}
+        {deleteModalVisible && <DeletePost />}
       </AppLayout>
     </>
   );

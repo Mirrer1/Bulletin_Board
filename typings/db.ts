@@ -15,7 +15,7 @@ export interface Post {
   content: string;
   writer: string;
   comments: Comment[];
-  password: string;
+  password?: string;
   created_at: string;
   updated_at: string;
 }
@@ -24,9 +24,11 @@ export interface PostState {
   mainPosts: Post[];
   singlePost: Post | null;
   editPost: Post | null;
+  deletePost: { id: number | null | undefined; password?: string } | null;
   firstComment: Comment[];
   replyComment: Comment[];
   checkModalVisible: boolean;
+  deleteModalVisible: boolean;
   loadPostsLoading: boolean;
   loadPostsDone: boolean;
   loadPostsError: null | unknown;
@@ -39,6 +41,9 @@ export interface PostState {
   editPostLoading: boolean;
   editPostDone: boolean;
   editPostError: null | unknown;
+  deletePostLoading: boolean;
+  deletePostDone: boolean;
+  deletePostError: null | unknown;
 }
 
 export interface FormVisible {

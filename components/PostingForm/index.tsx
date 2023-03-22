@@ -16,7 +16,7 @@ const PostingForm = () => {
 
   const onClickCancel = useCallback(() => {
     dispatch(initializeState());
-    Router.push('/');
+    Router.push(editPost ? `/post/${editPost?.id}` : '/');
   }, []);
 
   const onSubmitForm = useCallback((value: any) => {

@@ -1,16 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 import _ from 'lodash';
 
-import { modifyPost, loadPosts, loadSinglePost, postValidation } from '@actions/post';
+import { modifyPost, loadPosts, loadSinglePost, postValidation, removePost } from '@actions/post';
 import { PostState } from '@typings/db';
 
 const initialState: PostState = {
   mainPosts: [],
   singlePost: null,
   editPost: null,
+  deletePost: null,
   firstComment: [],
   replyComment: [],
   checkModalVisible: false,
+  deleteModalVisible: false,
   loadPostsLoading: false,
   loadPostsDone: false,
   loadPostsError: null,
@@ -23,6 +25,9 @@ const initialState: PostState = {
   editPostLoading: false,
   editPostDone: false,
   editPostError: null,
+  deletePostLoading: false,
+  deletePostDone: false,
+  deletePostError: null,
 };
 
 const postSlice = createSlice({
@@ -33,14 +38,22 @@ const postSlice = createSlice({
       state.editPost = null;
       state.checkModalVisible = false;
     },
-    loadEditPost: state => {
-      state.editPost = state.singlePost;
-    },
-    showCheckModal: state => {
+    showCheckModal: (state, action) => {
       state.checkModalVisible = true;
+      if (action.payload.type === 'edit') state.editPost = state.singlePost;
+      else if (action.payload.type === 'delete') state.deletePost = { id: state.singlePost?.id };
     },
     hideCheckModal: state => {
+      state.editPost = null;
+      state.editPost = null;
       state.checkModalVisible = false;
+    },
+    showDeleteModal: state => {
+      state.deleteModalVisible = true;
+      state.checkModalVisible = false;
+    },
+    hideDeleteModal: state => {
+      state.deleteModalVisible = false;
     },
   },
   extraReducers: builder => {
@@ -81,8 +94,8 @@ const postSlice = createSlice({
         state.postValidationError = null;
       })
       .addCase(postValidation.fulfilled, (state, action) => {
-        state.editPost!.password = action.payload;
-        state.checkModalVisible = false;
+        if (state.editPost) state.editPost.password = action.payload;
+        else if (state.deletePost) state.deletePost.password = action.payload;
         state.postValidationLoading = false;
         state.postValidationDone = true;
       })
@@ -102,9 +115,22 @@ const postSlice = createSlice({
       .addCase(modifyPost.rejected, (state, action) => {
         state.editPostLoading = false;
         state.editPostError = action.payload;
+      })
+      .addCase(removePost.pending, state => {
+        state.deletePostLoading = true;
+        state.deletePostDone = false;
+        state.deletePostError = null;
+      })
+      .addCase(removePost.fulfilled, state => {
+        state.deletePostLoading = false;
+        state.deletePostDone = true;
+      })
+      .addCase(removePost.rejected, (state, action) => {
+        state.deletePostLoading = false;
+        state.deletePostError = action.payload;
       });
   },
 });
 
-export const { initializeState, loadEditPost, showCheckModal, hideCheckModal } = postSlice.actions;
+export const { initializeState, showCheckModal, hideCheckModal, showDeleteModal, hideDeleteModal } = postSlice.actions;
 export default postSlice;
