@@ -55,7 +55,7 @@ const SingleComment = ({ comment }: { comment: Comment }) => {
           content={<p>{comment.content}</p>}
         />
       )}
-      {openReply && <CommentForm setOpenReply={setOpenReply} />}
+      {openReply && <CommentForm setOpenReply={setOpenReply} parent={comment.id} />}
     </>
   );
 };

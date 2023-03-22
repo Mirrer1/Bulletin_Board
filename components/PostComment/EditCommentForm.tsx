@@ -10,29 +10,18 @@ import { modifyComment } from '@actions/post';
 const EditCommentForm = () => {
   const dispatch = useAppDispatch();
   const [form] = Form.useForm();
-  const { editComment } = useAppSelector(state => state.post);
+  const { editComment, editCommentLoading } = useAppSelector(state => state.post);
   const [inputSize, setInputSize] = useState<'middle' | 'small'>('middle');
 
-  const onSubmitForm = useCallback((value: any) => {
-    if (editComment) {
-      dispatch(
-        modifyComment({
-          ...value,
-          id: editComment?.id,
-          created_at: editComment?.created_at,
-          updated_at: new Date().toISOString(),
-        }),
-      );
-    }
-    // else {
-    //   dispatch(
-    //     addPost({
-    //       ...value,
-    //       created_at: new Date().toISOString(),
-    //       updated_at: null,
-    //     }),
-    //   );
-    // }
+  const onSubmitForm = useCallback(value => {
+    dispatch(
+      modifyComment({
+        ...value,
+        id: editComment?.id,
+        created_at: editComment?.created_at,
+        updated_at: new Date().toISOString(),
+      }),
+    );
   }, []);
 
   const onClickCancel = useCallback(() => {
@@ -120,7 +109,7 @@ const EditCommentForm = () => {
           <Space>
             <PostBtn onClick={onClickCancel}>취소</PostBtn>
 
-            <PostBtn type="primary" htmlType="submit">
+            <PostBtn type="primary" htmlType="submit" loading={editCommentLoading}>
               수정
             </PostBtn>
           </Space>

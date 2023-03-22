@@ -51,6 +51,9 @@ export interface PostState {
   commentValidationLoading: boolean;
   commentValidationDone: boolean;
   commentValidationError: null | unknown;
+  addCommentLoading: boolean;
+  addCommentDone: boolean;
+  addCommentError: null | unknown;
   deleteCommentLoading: boolean;
   deleteCommentDone: boolean;
   deleteCommentError: null | unknown;
@@ -61,4 +64,5 @@ export interface PostState {
 
 export interface FormVisible {
   setOpenReply?: (x?: any) => void;
+  parent?: number | null | undefined;
 }

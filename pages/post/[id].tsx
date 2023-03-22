@@ -23,7 +23,9 @@ const Post = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { id } = router.query;
-  const { singlePost, checkModalVisible, deleteModalVisible } = useAppSelector(state => state.post);
+  const { singlePost, checkModalVisible, deleteModalVisible, addCommentDone, editCommentDone } = useAppSelector(
+    state => state.post,
+  );
   const [firstComments, setFirstComments] = useState<Comment[]>([]);
   const [secondComments, setSecondComments] = useState<Comment[]>([]);
 
@@ -48,7 +50,7 @@ const Post = () => {
       setFirstComments(singlePost?.comments.filter(v => v.parent === null));
       setSecondComments(singlePost?.comments.filter(v => v.parent !== null));
     }
-  }, [singlePost]);
+  }, [singlePost, addCommentDone, editCommentDone]);
 
   return (
     <>

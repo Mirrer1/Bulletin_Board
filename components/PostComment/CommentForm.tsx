@@ -1,19 +1,35 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Form, Input, Row, Col } from 'antd';
 
-import { FormVisible } from '@typings/db';
 import { PostBtn } from '@styles/postDetail/post';
+import { addComment } from '@actions/post';
+import { FormVisible } from '@typings/db';
+import { useAppDispatch, useAppSelector } from '@hooks/reduxHook';
 import { CommentFormWrapper } from '@styles/postingForm';
 
-const CommentForm = ({ setOpenReply }: FormVisible) => {
+const CommentForm = ({ setOpenReply, parent }: FormVisible) => {
+  const dispatch = useAppDispatch();
   const [form] = Form.useForm();
+  const { singlePost, addCommentLoading } = useAppSelector(state => state.post);
   const [inputSize, setInputSize] = useState<'middle' | 'small'>('middle');
 
-  const onSubmitComment = useCallback((value: { writer: string; password: string; content: string } | unknown) => {
-    console.log(value);
-    form.resetFields();
-    setOpenReply && setOpenReply();
-  }, []);
+  const onSubmitComment = useCallback(
+    value => {
+      dispatch(
+        addComment({
+          ...value,
+          postId: singlePost?.id,
+          parent: parent ? parent : null,
+          created_at: new Date().toISOString(),
+          updated_at: null,
+        }),
+      );
+
+      form.resetFields();
+      setOpenReply && setOpenReply();
+    },
+    [singlePost],
+  );
 
   useEffect(() => {
     function onResize() {
@@ -57,7 +73,7 @@ const CommentForm = ({ setOpenReply }: FormVisible) => {
                   type: 'string',
                   required: true,
                   message: '비밀번호 형식이 올바르지 않습니다.',
-                  pattern: new RegExp(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{1,16}$/),
+                  // pattern: new RegExp(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{1,16}$/),
                 },
               ]}
             >
@@ -85,7 +101,7 @@ const CommentForm = ({ setOpenReply }: FormVisible) => {
         </Form.Item>
 
         <Row justify="end">
-          <PostBtn type="primary" htmlType="submit">
+          <PostBtn type="primary" htmlType="submit" loading={addCommentLoading}>
             등록
           </PostBtn>
         </Row>

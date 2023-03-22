@@ -57,7 +57,7 @@ const ReplyComment = ({ responseTo, secondComments }: { responseTo: number; seco
                 />
               )}
 
-              {openReply && <CommentForm setOpenReply={setOpenReply} />}
+              {openReply && <CommentForm setOpenReply={setOpenReply} parent={comment.parent} />}
             </>
           )}
         </div>

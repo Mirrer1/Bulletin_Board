@@ -117,6 +117,17 @@ export const commentValidation = createAsyncThunk(
   },
 );
 
+export const addComment = createAsyncThunk('post/addComment', async (data: Comment, thunkAPI) => {
+  try {
+    const response = await axios.post('/comments', data);
+    message.success('댓글이 정상적으로 추가되었습니다.');
+    return response.data;
+  } catch (error: any) {
+    message.error('댓글 작성에 실패했습니다.');
+    return thunkAPI.rejectWithValue(error.response.data);
+  }
+});
+
 export const removeComment = createAsyncThunk(
   'post/removeComment',
   async (data: { id: number | null | undefined; password?: string } | null, thunkAPI) => {

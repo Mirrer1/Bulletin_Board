@@ -11,6 +11,7 @@ import {
   commentValidation,
   modifyComment,
   removeComment,
+  addComment,
 } from '@actions/post';
 import { PostState } from '@typings/db';
 
@@ -45,6 +46,9 @@ const initialState: PostState = {
   commentValidationLoading: false,
   commentValidationDone: false,
   commentValidationError: null,
+  addCommentLoading: false,
+  addCommentDone: false,
+  addCommentError: null,
   deleteCommentLoading: false,
   deleteCommentDone: false,
   deleteCommentError: null,
@@ -202,6 +206,20 @@ const postSlice = createSlice({
       .addCase(commentValidation.rejected, (state, action) => {
         state.commentValidationLoading = false;
         state.commentValidationError = action.payload;
+      })
+      .addCase(addComment.pending, state => {
+        state.addCommentLoading = true;
+        state.addCommentDone = false;
+        state.addCommentError = null;
+      })
+      .addCase(addComment.fulfilled, (state, action) => {
+        state.singlePost?.comments.push(action.payload);
+        state.addCommentLoading = false;
+        state.addCommentDone = true;
+      })
+      .addCase(addComment.rejected, (state, action) => {
+        state.addCommentLoading = false;
+        state.addCommentError = action.payload;
       })
       .addCase(removeComment.pending, state => {
         state.deleteCommentLoading = true;
