@@ -2,18 +2,21 @@ import React, { useCallback } from 'react';
 import { Modal } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 
-import { removePost } from '@actions/post';
+import { removeComment, removePost } from '@actions/post';
 import { hideDeleteModal } from '@reducers/postSlice';
 import { useAppDispatch, useAppSelector } from '@hooks/reduxHook';
 import { PasswordModalText } from '@styles/modal/checkPassword';
 
-const DeletePost = () => {
+const DeleteConfirm = () => {
   const dispatch = useAppDispatch();
-  const { deleteModalVisible, deletePost, deletePostLoading } = useAppSelector(state => state.post);
+  const { deleteModalVisible, deletePost, deletePostLoading, deleteComment, deleteCommentLoading } = useAppSelector(
+    state => state.post,
+  );
 
   const onClickDelete = useCallback(() => {
-    dispatch(removePost(deletePost));
-  }, [deletePost]);
+    if (deletePost) dispatch(removePost(deletePost));
+    else if (deleteComment) dispatch(removeComment(deleteComment));
+  }, [deletePost, deleteComment]);
 
   const onClickCancel = useCallback(() => {
     dispatch(hideDeleteModal());
@@ -26,17 +29,17 @@ const DeletePost = () => {
         visible={deleteModalVisible}
         onOk={onClickDelete}
         onCancel={onClickCancel}
-        confirmLoading={deletePostLoading}
+        confirmLoading={deletePostLoading || deleteCommentLoading}
       >
         <PasswordModalText>
           <DeleteOutlined />
-          <h1>게시글을 정말 삭제하시겠습니까?</h1>
+          <h1>{deletePost ? '게시글' : '댓글'}을 정말 삭제하시겠습니까?</h1>
         </PasswordModalText>
 
-        <p>삭제한 게시글은 복구할 수 없습니다.</p>
+        <p>삭제한 {deletePost ? '게시글' : '댓글'}은 복구할 수 없습니다.</p>
       </Modal>
     </>
   );
 };
 
-export default DeletePost;
+export default DeleteConfirm;

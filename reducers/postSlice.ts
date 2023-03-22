@@ -10,6 +10,7 @@ import {
   addPost,
   commentValidation,
   modifyComment,
+  removeComment,
 } from '@actions/post';
 import { PostState } from '@typings/db';
 
@@ -19,6 +20,7 @@ const initialState: PostState = {
   editPost: null,
   deletePost: null,
   editComment: null,
+  deleteComment: null,
   checkModalVisible: false,
   deleteModalVisible: false,
   editCommentFormVisible: false,
@@ -43,6 +45,9 @@ const initialState: PostState = {
   commentValidationLoading: false,
   commentValidationDone: false,
   commentValidationError: null,
+  deleteCommentLoading: false,
+  deleteCommentDone: false,
+  deleteCommentError: null,
   editCommentLoading: false,
   editCommentDone: false,
   editCommentError: null,
@@ -54,8 +59,10 @@ const postSlice = createSlice({
   reducers: {
     initializeState: state => {
       state.editPost = null;
-      state.checkModalVisible = false;
+      state.deletePost = null;
       state.editComment = null;
+      state.deleteComment = null;
+      state.checkModalVisible = false;
       state.editCommentFormVisible = false;
     },
     showCheckModal: (state, action) => {
@@ -64,12 +71,18 @@ const postSlice = createSlice({
 
       if (action.payload.type === 'postEdit') state.editPost = state.singlePost;
       else if (action.payload.type === 'postDelete') state.deletePost = { id: state.singlePost?.id };
-      if (action.payload.type === 'commentEdit')
+      else if (action.payload.type === 'commentEdit')
         state.editComment = _.find(state.singlePost?.comments, { id: action.payload.id });
+      else if (action.payload.type === 'commentDelete') {
+        const comment = _.find(state.singlePost?.comments, { id: action.payload.id });
+        state.deleteComment = { id: comment?.id };
+      }
     },
     hideCheckModal: state => {
       state.editPost = null;
-      state.editPost = null;
+      state.deletePost = null;
+      state.editComment = null;
+      state.deleteComment = null;
       state.checkModalVisible = false;
     },
     showDeleteModal: state => {
@@ -77,6 +90,8 @@ const postSlice = createSlice({
       state.checkModalVisible = false;
     },
     hideDeleteModal: state => {
+      state.deletePost = null;
+      state.deleteComment = null;
       state.deleteModalVisible = false;
     },
     showEditCommentForm: state => {
@@ -84,6 +99,8 @@ const postSlice = createSlice({
       state.checkModalVisible = false;
     },
     hideEditCommentForm: state => {
+      state.editPost = null;
+      state.editComment = null;
       state.editCommentFormVisible = false;
     },
   },
@@ -178,13 +195,30 @@ const postSlice = createSlice({
       })
       .addCase(commentValidation.fulfilled, (state, action) => {
         if (state.editComment) state.editComment.password = action.payload;
-        // else if (state.deletePost) state.deletePost.password = action.payload;
+        else if (state.deleteComment) state.deleteComment.password = action.payload;
         state.commentValidationLoading = false;
         state.commentValidationDone = true;
       })
       .addCase(commentValidation.rejected, (state, action) => {
         state.commentValidationLoading = false;
         state.commentValidationError = action.payload;
+      })
+      .addCase(removeComment.pending, state => {
+        state.deleteCommentLoading = true;
+        state.deleteCommentDone = false;
+        state.deleteCommentError = null;
+      })
+      .addCase(removeComment.fulfilled, (state, action) => {
+        if (state.singlePost?.comments) {
+          const commentIdx = state.singlePost?.comments.findIndex(v => v.id === action.payload);
+          state.singlePost.comments.splice(commentIdx, 1);
+        }
+        state.deleteCommentLoading = false;
+        state.deleteCommentDone = true;
+      })
+      .addCase(removeComment.rejected, (state, action) => {
+        state.deleteCommentLoading = false;
+        state.deleteCommentError = action.payload;
       })
       .addCase(modifyComment.pending, state => {
         state.editCommentLoading = true;
@@ -193,9 +227,8 @@ const postSlice = createSlice({
       })
       .addCase(modifyComment.fulfilled, (state, action) => {
         if (state.singlePost?.comments) {
-          state.singlePost.comments = state.singlePost?.comments.map(v =>
-            v.id === action.payload.id ? action.payload : v,
-          );
+          const commentIdx = state.singlePost?.comments.findIndex(v => v.id === action.payload.id);
+          state.singlePost.comments[commentIdx] = action.payload;
         }
         state.editCommentLoading = false;
         state.editCommentDone = true;

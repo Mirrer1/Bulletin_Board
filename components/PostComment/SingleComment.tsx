@@ -22,6 +22,10 @@ const SingleComment = ({ comment }: { comment: Comment }) => {
     dispatch(showCheckModal({ type: 'commentEdit', id: comment.id }));
   }, []);
 
+  const onClickDeleteComment = useCallback(() => {
+    dispatch(showCheckModal({ type: 'commentDelete', id: comment.id }));
+  }, []);
+
   return (
     <>
       {editCommentFormVisible && comment.id === editComment?.id ? (
@@ -41,7 +45,9 @@ const SingleComment = ({ comment }: { comment: Comment }) => {
                 <a key="comment-edit" onClick={onClickEditComment}>
                   수정
                 </a>
-                <a key="comment-delete">삭제</a>
+                <a key="comment-delete" onClick={onClickDeleteComment}>
+                  삭제
+                </a>
               </Space>
             </Space>,
           ]}

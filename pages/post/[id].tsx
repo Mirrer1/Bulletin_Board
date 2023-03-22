@@ -10,7 +10,7 @@ import CommentForm from '@components/PostComment/CommentForm';
 import SingleComment from '@components/PostComment/SingleComment';
 import ReplyComment from '@components/PostComment/ReplyComment';
 import CheckPassword from '@components/Modal/CheckPassword';
-import DeletePost from '@components/Modal/DeletePost';
+import DeleteConfirm from '@components/Modal/DeleteConfirm';
 
 import { Comment } from '@typings/db';
 import { loadSinglePost } from '@actions/post';
@@ -117,7 +117,7 @@ const Post = () => {
         </PostWrapper>
 
         {checkModalVisible && <CheckPassword />}
-        {deleteModalVisible && <DeletePost />}
+        {deleteModalVisible && <DeleteConfirm />}
       </AppLayout>
     </>
   );

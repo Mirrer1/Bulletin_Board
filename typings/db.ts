@@ -26,6 +26,7 @@ export interface PostState {
   editPost: Post | null;
   deletePost: { id: number | null | undefined; password?: string } | null;
   editComment: Comment | null | undefined;
+  deleteComment: { id: number | null | undefined; password?: string } | null;
   checkModalVisible: boolean;
   deleteModalVisible: boolean;
   editCommentFormVisible: boolean;
@@ -50,6 +51,9 @@ export interface PostState {
   commentValidationLoading: boolean;
   commentValidationDone: boolean;
   commentValidationError: null | unknown;
+  deleteCommentLoading: boolean;
+  deleteCommentDone: boolean;
+  deleteCommentError: null | unknown;
   editCommentLoading: boolean;
   editCommentDone: boolean;
   editCommentError: null | unknown;

@@ -9,9 +9,15 @@ import { PasswordModalText, PasswordModalInput } from '@styles/modal/checkPasswo
 
 const CheckPassword = () => {
   const dispatch = useAppDispatch();
-  const { checkModalVisible, editPost, deletePost, editComment, postValidationLoading } = useAppSelector(
-    state => state.post,
-  );
+  const {
+    checkModalVisible,
+    editPost,
+    deletePost,
+    editComment,
+    deleteComment,
+    postValidationLoading,
+    commentValidationLoading,
+  } = useAppSelector(state => state.post);
 
   const onClickCancel = useCallback(() => {
     dispatch(hideCheckModal());
@@ -21,6 +27,8 @@ const CheckPassword = () => {
     if (editPost) dispatch(postValidation({ type: 'postEdit', id: editPost?.id, password: value }));
     else if (deletePost) dispatch(postValidation({ type: 'postDelete', id: deletePost?.id, password: value }));
     else if (editComment) dispatch(commentValidation({ type: 'commentEdit', id: editComment?.id, password: value }));
+    else if (deleteComment)
+      dispatch(commentValidation({ type: 'commentDelete', id: deleteComment?.id, password: value }));
   }, []);
 
   return (
@@ -38,7 +46,7 @@ const CheckPassword = () => {
           enterButton="확인"
           minLength={1}
           maxLength={16}
-          loading={postValidationLoading}
+          loading={postValidationLoading || commentValidationLoading}
         />
       </Modal>
     </>

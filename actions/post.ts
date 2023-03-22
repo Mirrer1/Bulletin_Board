@@ -104,15 +104,28 @@ export const commentValidation = createAsyncThunk(
         comment.password === data.password
           ? thunkAPI.dispatch(showEditCommentForm())
           : message.warning('비밀번호가 일치하지 않습니다.');
+      } else if (data.type === 'commentDelete') {
+        comment.password === data.password
+          ? thunkAPI.dispatch(showDeleteModal())
+          : message.warning('비밀번호가 일치하지 않습니다.');
       }
-      // else if (data.type === 'postDelete') {
-      //   post.password === data.password
-      //     ? thunkAPI.dispatch(showDeleteModal())
-      //     : message.warning('비밀번호가 일치하지 않습니다.');
-      // }
       return comment.password;
     } catch (error: any) {
       message.error('게시글이 존재하지 않습니다.');
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const removeComment = createAsyncThunk(
+  'post/removeComment',
+  async (data: { id: number | null | undefined; password?: string } | null, thunkAPI) => {
+    try {
+      const response = await axios.delete(`/comments/${data?.id}?paswword=${data?.password}`);
+      message.success('댓글이 정상적으로 삭제되었습니다.');
+      return response.data.id;
+    } catch (error: any) {
+      message.error('댓글 삭제에 실패했습니다.');
       return thunkAPI.rejectWithValue(error.response.data);
     }
   },
@@ -125,7 +138,7 @@ export const modifyComment = createAsyncThunk('post/modifyComment', async (data:
     thunkAPI.dispatch(initializeState());
     return response.data;
   } catch (error: any) {
-    message.error('댓글 수정이 실패하였습니다.');
+    message.error('댓글 수정에 실패했습니다.');
     return thunkAPI.rejectWithValue(error.response.data);
   }
 });
