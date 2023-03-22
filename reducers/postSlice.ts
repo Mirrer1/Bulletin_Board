@@ -19,8 +19,6 @@ const initialState: PostState = {
   editPost: null,
   deletePost: null,
   editComment: null,
-  firstComment: [],
-  replyComment: [],
   checkModalVisible: false,
   deleteModalVisible: false,
   editCommentFormVisible: false,
@@ -112,8 +110,6 @@ const postSlice = createSlice({
       })
       .addCase(loadSinglePost.fulfilled, (state, action) => {
         state.singlePost = action.payload;
-        state.firstComment = _.filter(state.singlePost?.comments, { parent: null });
-        state.replyComment = _.filter(state.singlePost?.comments, 'parent');
         state.loadSinglePostLoading = false;
         state.loadSinglePostDone = true;
       })
@@ -196,14 +192,11 @@ const postSlice = createSlice({
         state.editCommentError = null;
       })
       .addCase(modifyComment.fulfilled, (state, action) => {
-        // draft.mainPosts.find((v) => v.id === action.data.PostId).content = action.data.content;
-
         if (state.singlePost?.comments) {
           state.singlePost.comments = state.singlePost?.comments.map(v =>
             v.id === action.payload.id ? action.payload : v,
           );
         }
-
         state.editCommentLoading = false;
         state.editCommentDone = true;
       })

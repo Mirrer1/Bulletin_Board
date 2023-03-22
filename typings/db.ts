@@ -26,8 +26,6 @@ export interface PostState {
   editPost: Post | null;
   deletePost: { id: number | null | undefined; password?: string } | null;
   editComment: Comment | null | undefined;
-  firstComment: Comment[];
-  replyComment: Comment[];
   checkModalVisible: boolean;
   deleteModalVisible: boolean;
   editCommentFormVisible: boolean;

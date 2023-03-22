@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Router, { useRouter } from 'next/router';
 import { Divider, Row, Space } from 'antd';
 import { CommentOutlined } from '@ant-design/icons';
@@ -10,19 +10,22 @@ import CommentForm from '@components/PostComment/CommentForm';
 import SingleComment from '@components/PostComment/SingleComment';
 import ReplyComment from '@components/PostComment/ReplyComment';
 import CheckPassword from '@components/Modal/CheckPassword';
+import DeletePost from '@components/Modal/DeletePost';
 
+import { Comment } from '@typings/db';
 import { loadSinglePost } from '@actions/post';
 import { showCheckModal } from '@reducers/postSlice';
 import { useAppDispatch, useAppSelector } from '@hooks/reduxHook';
 import { CommentWrapper } from '@styles/postDetail/postComment';
 import { PostWrapper, PostBtn, PostContent, PostWriteInfo, PostCommentInfo } from '@styles/postDetail/post';
-import DeletePost from '@components/Modal/DeletePost';
 
 const Post = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { id } = router.query;
-  const { singlePost, firstComment, checkModalVisible, deleteModalVisible } = useAppSelector(state => state.post);
+  const { singlePost, checkModalVisible, deleteModalVisible } = useAppSelector(state => state.post);
+  const [firstComments, setFirstComments] = useState<Comment[]>([]);
+  const [secondComments, setSecondComments] = useState<Comment[]>([]);
 
   const onClickList = useCallback(() => {
     Router.push('/');
@@ -39,6 +42,13 @@ const Post = () => {
   useEffect(() => {
     dispatch(loadSinglePost(id));
   }, []);
+
+  useEffect(() => {
+    if (singlePost?.comments) {
+      setFirstComments(singlePost?.comments.filter(v => v.parent === null));
+      setSecondComments(singlePost?.comments.filter(v => v.parent !== null));
+    }
+  }, [singlePost]);
 
   return (
     <>
@@ -91,12 +101,12 @@ const Post = () => {
 
           <CommentWrapper>
             <div>총 {singlePost?.comments.length}개의 댓글</div>
-            {firstComment &&
-              firstComment.map(comment => {
+            {firstComments &&
+              firstComments.map(comment => {
                 return (
                   <div key={comment.id}>
                     <SingleComment comment={comment} />
-                    <ReplyComment responseTo={comment.id} />
+                    <ReplyComment responseTo={comment.id} secondComments={secondComments} />
                     <Divider />
                   </div>
                 );

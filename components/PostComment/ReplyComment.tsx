@@ -4,15 +4,14 @@ import dayjs from 'dayjs';
 
 import CommentForm from '@components/PostComment/CommentForm';
 import EditCommentForm from '@components/PostComment/EditCommentForm';
+import { Comment } from '@typings/db';
 import { showCheckModal } from '@reducers/postSlice';
 import { useAppDispatch, useAppSelector } from '@hooks/reduxHook';
 import { CommentInfo, ReplyCommentWrapper } from '@styles/postDetail/postComment';
 
-const ReplyComment = ({ responseTo }: { responseTo: number }) => {
+const ReplyComment = ({ responseTo, secondComments }: { responseTo: number; secondComments: Comment[] }) => {
   const dispatch = useAppDispatch();
-  const { replyComment, editCommentFormVisible, editComment, commentValidationDone } = useAppSelector(
-    state => state.post,
-  );
+  const { editCommentFormVisible, editComment, commentValidationDone } = useAppSelector(state => state.post);
   const [openReply, setOpenReply] = useState(false);
 
   const onClickReplyOpen = useCallback(() => {
@@ -28,7 +27,7 @@ const ReplyComment = ({ responseTo }: { responseTo: number }) => {
 
   return (
     <ReplyCommentWrapper>
-      {replyComment.map(comment => (
+      {secondComments.map(comment => (
         <div key={comment.id}>
           {responseTo === comment.parent && (
             <>
