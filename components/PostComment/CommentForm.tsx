@@ -73,7 +73,7 @@ const CommentForm = ({ setOpenReply, parent }: FormVisible) => {
                   type: 'string',
                   required: true,
                   message: '비밀번호 형식이 올바르지 않습니다.',
-                  // pattern: new RegExp(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{1,16}$/),
+                  pattern: new RegExp(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{1,16}$/),
                 },
               ]}
             >

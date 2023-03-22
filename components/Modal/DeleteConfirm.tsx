@@ -2,8 +2,8 @@ import React, { useCallback } from 'react';
 import { Modal } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 
-import { removeComment, removePost } from '@actions/post';
 import { hideDeleteModal } from '@reducers/postSlice';
+import { removeComment, removePost } from '@actions/post';
 import { useAppDispatch, useAppSelector } from '@hooks/reduxHook';
 import { PasswordModalText } from '@styles/modal/checkPassword';
 

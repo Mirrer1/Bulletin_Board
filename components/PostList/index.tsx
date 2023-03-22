@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import type { ColumnsType } from 'antd/es/table';
 import { Table } from 'antd';
 import { CommentOutlined } from '@ant-design/icons';
+import type { ColumnsType } from 'antd/es/table';
 import Router from 'next/router';
 
 import { Post, Comment } from '@typings/db';

@@ -7,8 +7,8 @@ import AppLayout from '@components/AppLayout';
 import PostList from '@components/PostList';
 import { loadPosts } from '@actions/post';
 import { useAppDispatch } from '@hooks/reduxHook';
-import { PageWrapper, ListSelectCount } from '@styles/postList';
 import { PostBtn } from '@styles/postDetail/post';
+import { PageWrapper, ListSelectCount } from '@styles/postList';
 
 const Home = () => {
   const dispatch = useAppDispatch();
