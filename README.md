@@ -24,19 +24,25 @@
 
 - 모바일, 태블릿, 데스크탑...등 사용자의 접속 디바이스에 맞춰 **반응형 웹 디자인을 구현**했습니다.
 
-이미지넣기
+
+<img src='https://user-images.githubusercontent.com/87924110/227054192-57c84b2b-37a0-4c28-ae11-4e195e24ce3b.gif' style="width:60%" />
+
+<br />
 
 ### 게시글 작성, 수정
 
 - 포스팅 페이지를 통해 사용자는 **게시글을 작성 또는 수정**할 수 있습니다.
 
-이미지 넣기
+<img src='https://user-images.githubusercontent.com/87924110/227054889-6830d9fa-47a8-4043-bbe3-35e77e02b656.gif' style="width:60%" />
+
+<br />
 
 ### 댓글 작성, 수정
 
 - **2단계 Deps로 댓글을 구현**하였으며, 사용자는 **댓글을 작성하거나 작성된 댓글에 추가로 답글을 작성**할 수 있습니다.
 
-이미지 넣기
+<img src='https://user-images.githubusercontent.com/87924110/227055032-e4ae15d6-5003-4283-acfa-6f3763609bc5.gif' style="width:60%" />
+
 
 <br />
 
@@ -349,6 +355,24 @@ export default ReplyComment;
 - 게시글, 댓글 삭제 API를 구현하여 실행한 결과 **401 (Unauthorized) Error가 발생**했습니다.
 
 - 해당 오류는 삭제 권한을 얻기 위한 인증 값, 즉 **Password를 첨부하지 않은 이유로 판단**됩니다.
+
+
+```javascript
+export const removePost = createAsyncThunk('post/removePost', async (data, thunkAPI) => {
+    try {
+      await axios.delete(`/posts/${data.id}?paswword=${data.password}`);
+      message.success('게시글이 정상적으로 삭제되었습니다.');
+      Router.push('/');
+    } catch (error: any) {
+      message.error('게시글 삭제에 실패했습니다.');
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+```
+
+
+
 
 <br />
 
