@@ -25,10 +25,11 @@ export interface PostState {
   singlePost: Post | null;
   editPost: Post | null;
   deletePost: { id: number | null | undefined; password?: string } | null;
-  firstComment: Comment[];
-  replyComment: Comment[];
+  editComment: Comment | null | undefined;
+  deleteComment: { id: number | null | undefined; password?: string } | null;
   checkModalVisible: boolean;
   deleteModalVisible: boolean;
+  editCommentFormVisible: boolean;
   loadPostsLoading: boolean;
   loadPostsDone: boolean;
   loadPostsError: null | unknown;
@@ -47,8 +48,21 @@ export interface PostState {
   editPostLoading: boolean;
   editPostDone: boolean;
   editPostError: null | unknown;
+  commentValidationLoading: boolean;
+  commentValidationDone: boolean;
+  commentValidationError: null | unknown;
+  addCommentLoading: boolean;
+  addCommentDone: boolean;
+  addCommentError: null | unknown;
+  deleteCommentLoading: boolean;
+  deleteCommentDone: boolean;
+  deleteCommentError: null | unknown;
+  editCommentLoading: boolean;
+  editCommentDone: boolean;
+  editCommentError: null | unknown;
 }
 
 export interface FormVisible {
   setOpenReply?: (x?: any) => void;
+  parent?: number | null | undefined;
 }

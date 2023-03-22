@@ -1,7 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 import _ from 'lodash';
 
-import { modifyPost, loadPosts, loadSinglePost, postValidation, removePost, addPost } from '@actions/post';
+import {
+  modifyPost,
+  loadPosts,
+  loadSinglePost,
+  postValidation,
+  removePost,
+  addPost,
+  commentValidation,
+  modifyComment,
+  removeComment,
+  addComment,
+} from '@actions/post';
 import { PostState } from '@typings/db';
 
 const initialState: PostState = {
@@ -9,10 +20,11 @@ const initialState: PostState = {
   singlePost: null,
   editPost: null,
   deletePost: null,
-  firstComment: [],
-  replyComment: [],
+  editComment: null,
+  deleteComment: null,
   checkModalVisible: false,
   deleteModalVisible: false,
+  editCommentFormVisible: false,
   loadPostsLoading: false,
   loadPostsDone: false,
   loadPostsError: null,
@@ -31,6 +43,18 @@ const initialState: PostState = {
   editPostLoading: false,
   editPostDone: false,
   editPostError: null,
+  commentValidationLoading: false,
+  commentValidationDone: false,
+  commentValidationError: null,
+  addCommentLoading: false,
+  addCommentDone: false,
+  addCommentError: null,
+  deleteCommentLoading: false,
+  deleteCommentDone: false,
+  deleteCommentError: null,
+  editCommentLoading: false,
+  editCommentDone: false,
+  editCommentError: null,
 };
 
 const postSlice = createSlice({
@@ -39,16 +63,30 @@ const postSlice = createSlice({
   reducers: {
     initializeState: state => {
       state.editPost = null;
+      state.deletePost = null;
+      state.editComment = null;
+      state.deleteComment = null;
       state.checkModalVisible = false;
+      state.editCommentFormVisible = false;
     },
     showCheckModal: (state, action) => {
       state.checkModalVisible = true;
-      if (action.payload.type === 'edit') state.editPost = state.singlePost;
-      else if (action.payload.type === 'delete') state.deletePost = { id: state.singlePost?.id };
+      state.editCommentFormVisible = false;
+
+      if (action.payload.type === 'postEdit') state.editPost = state.singlePost;
+      else if (action.payload.type === 'postDelete') state.deletePost = { id: state.singlePost?.id };
+      else if (action.payload.type === 'commentEdit')
+        state.editComment = _.find(state.singlePost?.comments, { id: action.payload.id });
+      else if (action.payload.type === 'commentDelete') {
+        const comment = _.find(state.singlePost?.comments, { id: action.payload.id });
+        state.deleteComment = { id: comment?.id };
+      }
     },
     hideCheckModal: state => {
       state.editPost = null;
-      state.editPost = null;
+      state.deletePost = null;
+      state.editComment = null;
+      state.deleteComment = null;
       state.checkModalVisible = false;
     },
     showDeleteModal: state => {
@@ -56,7 +94,18 @@ const postSlice = createSlice({
       state.checkModalVisible = false;
     },
     hideDeleteModal: state => {
+      state.deletePost = null;
+      state.deleteComment = null;
       state.deleteModalVisible = false;
+    },
+    showEditCommentForm: state => {
+      state.editCommentFormVisible = true;
+      state.checkModalVisible = false;
+    },
+    hideEditCommentForm: state => {
+      state.editPost = null;
+      state.editComment = null;
+      state.editCommentFormVisible = false;
     },
   },
   extraReducers: builder => {
@@ -82,8 +131,6 @@ const postSlice = createSlice({
       })
       .addCase(loadSinglePost.fulfilled, (state, action) => {
         state.singlePost = action.payload;
-        state.firstComment = _.filter(state.singlePost?.comments, { parent: null });
-        state.replyComment = _.filter(state.singlePost?.comments, 'parent');
         state.loadSinglePostLoading = false;
         state.loadSinglePostDone = true;
       })
@@ -144,9 +191,80 @@ const postSlice = createSlice({
       .addCase(modifyPost.rejected, (state, action) => {
         state.editPostLoading = false;
         state.editPostError = action.payload;
+      })
+      .addCase(commentValidation.pending, state => {
+        state.commentValidationLoading = true;
+        state.commentValidationDone = false;
+        state.commentValidationError = null;
+      })
+      .addCase(commentValidation.fulfilled, (state, action) => {
+        if (state.editComment) state.editComment.password = action.payload;
+        else if (state.deleteComment) state.deleteComment.password = action.payload;
+        state.commentValidationLoading = false;
+        state.commentValidationDone = true;
+      })
+      .addCase(commentValidation.rejected, (state, action) => {
+        state.commentValidationLoading = false;
+        state.commentValidationError = action.payload;
+      })
+      .addCase(addComment.pending, state => {
+        state.addCommentLoading = true;
+        state.addCommentDone = false;
+        state.addCommentError = null;
+      })
+      .addCase(addComment.fulfilled, (state, action) => {
+        state.singlePost?.comments.push(action.payload);
+        state.addCommentLoading = false;
+        state.addCommentDone = true;
+      })
+      .addCase(addComment.rejected, (state, action) => {
+        state.addCommentLoading = false;
+        state.addCommentError = action.payload;
+      })
+      .addCase(removeComment.pending, state => {
+        state.deleteCommentLoading = true;
+        state.deleteCommentDone = false;
+        state.deleteCommentError = null;
+      })
+      .addCase(removeComment.fulfilled, (state, action) => {
+        if (state.singlePost?.comments) {
+          const commentIdx = state.singlePost?.comments.findIndex(v => v.id === action.payload);
+          state.singlePost.comments.splice(commentIdx, 1);
+        }
+        state.deleteCommentLoading = false;
+        state.deleteCommentDone = true;
+      })
+      .addCase(removeComment.rejected, (state, action) => {
+        state.deleteCommentLoading = false;
+        state.deleteCommentError = action.payload;
+      })
+      .addCase(modifyComment.pending, state => {
+        state.editCommentLoading = true;
+        state.editCommentDone = false;
+        state.editCommentError = null;
+      })
+      .addCase(modifyComment.fulfilled, (state, action) => {
+        if (state.singlePost?.comments) {
+          const commentIdx = state.singlePost?.comments.findIndex(v => v.id === action.payload.id);
+          state.singlePost.comments[commentIdx] = action.payload;
+        }
+        state.editCommentLoading = false;
+        state.editCommentDone = true;
+      })
+      .addCase(modifyComment.rejected, (state, action) => {
+        state.editCommentLoading = false;
+        state.editCommentError = action.payload;
       });
   },
 });
 
-export const { initializeState, showCheckModal, hideCheckModal, showDeleteModal, hideDeleteModal } = postSlice.actions;
+export const {
+  initializeState,
+  showCheckModal,
+  hideCheckModal,
+  showDeleteModal,
+  hideDeleteModal,
+  showEditCommentForm,
+  hideEditCommentForm,
+} = postSlice.actions;
 export default postSlice;
