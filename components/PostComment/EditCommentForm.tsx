@@ -1,18 +1,42 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Form, Input, Row, Col } from 'antd';
+import { Form, Input, Row, Col, Space } from 'antd';
 
-import { FormVisible } from '@typings/db';
+import { useAppDispatch, useAppSelector } from '@hooks/reduxHook';
+import { hideEditCommentForm } from '@reducers/postSlice';
 import { PostBtn } from '@styles/postDetail/post';
 import { CommentFormWrapper } from '@styles/postingForm';
+import { modifyComment } from '@actions/post';
 
-const CommentForm = ({ setOpenReply }: FormVisible) => {
+const EditCommentForm = () => {
+  const dispatch = useAppDispatch();
   const [form] = Form.useForm();
+  const { editComment } = useAppSelector(state => state.post);
   const [inputSize, setInputSize] = useState<'middle' | 'small'>('middle');
 
-  const onSubmitComment = useCallback((value: { writer: string; password: string; content: string } | unknown) => {
-    console.log(value);
-    form.resetFields();
-    setOpenReply && setOpenReply();
+  const onSubmitForm = useCallback((value: any) => {
+    if (editComment) {
+      dispatch(
+        modifyComment({
+          ...value,
+          id: editComment?.id,
+          created_at: editComment?.created_at,
+          updated_at: new Date().toISOString(),
+        }),
+      );
+    }
+    // else {
+    //   dispatch(
+    //     addPost({
+    //       ...value,
+    //       created_at: new Date().toISOString(),
+    //       updated_at: null,
+    //     }),
+    //   );
+    // }
+  }, []);
+
+  const onClickCancel = useCallback(() => {
+    dispatch(hideEditCommentForm());
   }, []);
 
   useEffect(() => {
@@ -30,9 +54,17 @@ const CommentForm = ({ setOpenReply }: FormVisible) => {
     };
   }, []);
 
+  useEffect(() => {
+    form.setFieldsValue({
+      writer: editComment?.writer,
+      password: editComment?.password,
+      content: editComment?.content,
+    });
+  }, [form, editComment]);
+
   return (
     <>
-      <CommentFormWrapper form={form} name="writeComment" onFinish={onSubmitComment}>
+      <CommentFormWrapper form={form} name="writeComment" onFinish={onSubmitForm}>
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
@@ -57,7 +89,7 @@ const CommentForm = ({ setOpenReply }: FormVisible) => {
                   type: 'string',
                   required: true,
                   message: '비밀번호 형식이 올바르지 않습니다.',
-                  pattern: new RegExp(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{1,16}$/),
+                  // pattern: new RegExp(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{1,16}$/),
                 },
               ]}
             >
@@ -85,13 +117,17 @@ const CommentForm = ({ setOpenReply }: FormVisible) => {
         </Form.Item>
 
         <Row justify="end">
-          <PostBtn type="primary" htmlType="submit">
-            등록
-          </PostBtn>
+          <Space>
+            <PostBtn onClick={onClickCancel}>취소</PostBtn>
+
+            <PostBtn type="primary" htmlType="submit">
+              수정
+            </PostBtn>
+          </Space>
         </Row>
       </CommentFormWrapper>
     </>
   );
 };
 
-export default CommentForm;
+export default EditCommentForm;

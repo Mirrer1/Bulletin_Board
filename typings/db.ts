@@ -25,10 +25,12 @@ export interface PostState {
   singlePost: Post | null;
   editPost: Post | null;
   deletePost: { id: number | null | undefined; password?: string } | null;
+  editComment: Comment | null | undefined;
   firstComment: Comment[];
   replyComment: Comment[];
   checkModalVisible: boolean;
   deleteModalVisible: boolean;
+  editCommentFormVisible: boolean;
   loadPostsLoading: boolean;
   loadPostsDone: boolean;
   loadPostsError: null | unknown;
@@ -47,6 +49,12 @@ export interface PostState {
   editPostLoading: boolean;
   editPostDone: boolean;
   editPostError: null | unknown;
+  commentValidationLoading: boolean;
+  commentValidationDone: boolean;
+  commentValidationError: null | unknown;
+  editCommentLoading: boolean;
+  editCommentDone: boolean;
+  editCommentError: null | unknown;
 }
 
 export interface FormVisible {

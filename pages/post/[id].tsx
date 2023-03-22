@@ -29,11 +29,11 @@ const Post = () => {
   }, []);
 
   const onClickEditPost = useCallback(() => {
-    dispatch(showCheckModal({ type: 'edit' }));
+    dispatch(showCheckModal({ type: 'postEdit' }));
   }, []);
 
   const onClickDeletePost = useCallback(() => {
-    dispatch(showCheckModal({ type: 'delete' }));
+    dispatch(showCheckModal({ type: 'postDelete' }));
   }, []);
 
   useEffect(() => {
