@@ -4,14 +4,14 @@ import Router from 'next/router';
 
 import { useAppDispatch, useAppSelector } from '@hooks/reduxHook';
 import { initializeState } from '@reducers/postSlice';
-import { modifyPost } from '@actions/post';
+import { addPost, modifyPost } from '@actions/post';
 import { PostBtn } from '@styles/postDetail/post';
 import { FormWrapper } from '@styles/postingForm';
 
 const PostingForm = () => {
   const dispatch = useAppDispatch();
   const [form] = Form.useForm();
-  const { editPost, editPostLoading } = useAppSelector(state => state.post);
+  const { editPost, addPostLoading, editPostLoading } = useAppSelector(state => state.post);
   const [inputSize, setInputSize] = useState<'large' | 'middle' | 'small'>('large');
 
   const onClickCancel = useCallback(() => {
@@ -20,14 +20,24 @@ const PostingForm = () => {
   }, []);
 
   const onSubmitForm = useCallback((value: any) => {
-    dispatch(
-      modifyPost({
-        ...value,
-        id: editPost?.id,
-        created_at: editPost?.created_at,
-        updated_at: new Date().toISOString(),
-      }),
-    );
+    if (editPost) {
+      dispatch(
+        modifyPost({
+          ...value,
+          id: editPost?.id,
+          created_at: editPost?.created_at,
+          updated_at: new Date().toISOString(),
+        }),
+      );
+    } else {
+      dispatch(
+        addPost({
+          ...value,
+          created_at: new Date().toISOString(),
+          updated_at: null,
+        }),
+      );
+    }
   }, []);
 
   useEffect(() => {
@@ -138,8 +148,8 @@ const PostingForm = () => {
         <Row justify="end">
           <Space>
             <PostBtn onClick={onClickCancel}>취소</PostBtn>
-            <PostBtn type="primary" htmlType="submit" loading={editPostLoading}>
-              작성
+            <PostBtn type="primary" htmlType="submit" loading={editPostLoading || addPostLoading}>
+              {editPost ? '수정' : '작성'}
             </PostBtn>
           </Space>
         </Row>

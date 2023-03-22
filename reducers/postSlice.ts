@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import _ from 'lodash';
 
-import { modifyPost, loadPosts, loadSinglePost, postValidation, removePost } from '@actions/post';
+import { modifyPost, loadPosts, loadSinglePost, postValidation, removePost, addPost } from '@actions/post';
 import { PostState } from '@typings/db';
 
 const initialState: PostState = {
@@ -22,12 +22,15 @@ const initialState: PostState = {
   postValidationLoading: false,
   postValidationDone: false,
   postValidationError: null,
-  editPostLoading: false,
-  editPostDone: false,
-  editPostError: null,
+  addPostLoading: false,
+  addPostDone: false,
+  addPostError: null,
   deletePostLoading: false,
   deletePostDone: false,
   deletePostError: null,
+  editPostLoading: false,
+  editPostDone: false,
+  editPostError: null,
 };
 
 const postSlice = createSlice({
@@ -103,18 +106,18 @@ const postSlice = createSlice({
         state.postValidationLoading = false;
         state.postValidationError = action.payload;
       })
-      .addCase(modifyPost.pending, state => {
-        state.editPostLoading = true;
-        state.editPostDone = false;
-        state.editPostError = null;
+      .addCase(addPost.pending, state => {
+        state.addPostLoading = true;
+        state.addPostDone = false;
+        state.addPostError = null;
       })
-      .addCase(modifyPost.fulfilled, state => {
-        state.editPostLoading = false;
-        state.editPostDone = true;
+      .addCase(addPost.fulfilled, state => {
+        state.addPostLoading = false;
+        state.addPostDone = true;
       })
-      .addCase(modifyPost.rejected, (state, action) => {
-        state.editPostLoading = false;
-        state.editPostError = action.payload;
+      .addCase(addPost.rejected, (state, action) => {
+        state.addPostLoading = false;
+        state.addPostError = action.payload;
       })
       .addCase(removePost.pending, state => {
         state.deletePostLoading = true;
@@ -128,6 +131,19 @@ const postSlice = createSlice({
       .addCase(removePost.rejected, (state, action) => {
         state.deletePostLoading = false;
         state.deletePostError = action.payload;
+      })
+      .addCase(modifyPost.pending, state => {
+        state.editPostLoading = true;
+        state.editPostDone = false;
+        state.editPostError = null;
+      })
+      .addCase(modifyPost.fulfilled, state => {
+        state.editPostLoading = false;
+        state.editPostDone = true;
+      })
+      .addCase(modifyPost.rejected, (state, action) => {
+        state.editPostLoading = false;
+        state.editPostError = action.payload;
       });
   },
 });

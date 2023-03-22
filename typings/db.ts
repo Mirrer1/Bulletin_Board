@@ -38,12 +38,15 @@ export interface PostState {
   postValidationLoading: boolean;
   postValidationDone: boolean;
   postValidationError: null | unknown;
-  editPostLoading: boolean;
-  editPostDone: boolean;
-  editPostError: null | unknown;
+  addPostLoading: boolean;
+  addPostDone: boolean;
+  addPostError: null | unknown;
   deletePostLoading: boolean;
   deletePostDone: boolean;
   deletePostError: null | unknown;
+  editPostLoading: boolean;
+  editPostDone: boolean;
+  editPostError: null | unknown;
 }
 
 export interface FormVisible {

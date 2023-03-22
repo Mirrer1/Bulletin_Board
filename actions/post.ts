@@ -12,7 +12,7 @@ axios.defaults.baseURL = backUrl;
 axios.defaults.withCredentials = true;
 
 export const loadPosts = createAsyncThunk('post/loadPosts', async () => {
-  const posts = await axios.get('/posts');
+  const posts = await axios.get('/posts?_sort=id&_order=desc');
   const comments = await axios.get('/comments');
 
   const response: Post[] = [];
@@ -55,15 +55,13 @@ export const postValidation = createAsyncThunk(
   },
 );
 
-export const modifyPost = createAsyncThunk('post/editPost', async (data: Post, thunkAPI) => {
+export const addPost = createAsyncThunk('post/addPost', async (data: Post, thunkAPI) => {
   try {
-    const response = await axios.patch(`/posts/${data.id}`, data);
-    message.success('게시글 수정이 정상적으로 완료되었습니다.');
-    Router.push(`/post/${data.id}`);
-    thunkAPI.dispatch(initializeState());
-    return response.data;
+    await axios.post('/posts', data);
+    message.success('게시글이 정상적으로 작성되었습니다.');
+    Router.push('/');
   } catch (error: any) {
-    message.error('게시글 수정이 실패하였습니다.');
+    message.error('게시글 작성에 실패했습니다.');
     return thunkAPI.rejectWithValue(error.response.data);
   }
 });
@@ -81,3 +79,16 @@ export const removePost = createAsyncThunk(
     }
   },
 );
+
+export const modifyPost = createAsyncThunk('post/editPost', async (data: Post, thunkAPI) => {
+  try {
+    const response = await axios.patch(`/posts/${data.id}`, data);
+    message.success('게시글 수정이 정상적으로 완료되었습니다.');
+    Router.push(`/post/${data.id}`);
+    thunkAPI.dispatch(initializeState());
+    return response.data;
+  } catch (error: any) {
+    message.error('게시글 수정이 실패하였습니다.');
+    return thunkAPI.rejectWithValue(error.response.data);
+  }
+});
