@@ -2,9 +2,9 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Form, Input, Row, Col, Space } from 'antd';
 import Router from 'next/router';
 
-import { useAppDispatch, useAppSelector } from '@hooks/reduxHook';
 import { initializeState } from '@reducers/postSlice';
 import { addPost, modifyPost } from '@actions/post';
+import { useAppDispatch, useAppSelector } from '@hooks/reduxHook';
 import { PostBtn } from '@styles/postDetail/post';
 import { FormWrapper } from '@styles/postingForm';
 
@@ -93,7 +93,7 @@ const PostingForm = () => {
                   type: 'string',
                   required: true,
                   message: '비밀번호 형식이 올바르지 않습니다.',
-                  // pattern: new RegExp(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{1,16}$/),
+                  pattern: new RegExp(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{1,16}$/),
                 },
               ]}
             >

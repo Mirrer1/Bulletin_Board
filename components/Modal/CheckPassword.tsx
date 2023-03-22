@@ -2,8 +2,8 @@ import React, { useCallback } from 'react';
 import { Modal } from 'antd';
 import { KeyOutlined } from '@ant-design/icons';
 
-import { commentValidation, postValidation } from '@actions/post';
 import { hideCheckModal } from '@reducers/postSlice';
+import { commentValidation, postValidation } from '@actions/post';
 import { useAppDispatch, useAppSelector } from '@hooks/reduxHook';
 import { PasswordModalText, PasswordModalInput } from '@styles/modal/checkPassword';
 

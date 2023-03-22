@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Form, Input, Row, Col, Space } from 'antd';
 
-import { useAppDispatch, useAppSelector } from '@hooks/reduxHook';
+import { modifyComment } from '@actions/post';
 import { hideEditCommentForm } from '@reducers/postSlice';
+import { useAppDispatch, useAppSelector } from '@hooks/reduxHook';
 import { PostBtn } from '@styles/postDetail/post';
 import { CommentFormWrapper } from '@styles/postingForm';
-import { modifyComment } from '@actions/post';
 
 const EditCommentForm = () => {
   const dispatch = useAppDispatch();
@@ -78,7 +78,7 @@ const EditCommentForm = () => {
                   type: 'string',
                   required: true,
                   message: '비밀번호 형식이 올바르지 않습니다.',
-                  // pattern: new RegExp(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{1,16}$/),
+                  pattern: new RegExp(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{1,16}$/),
                 },
               ]}
             >

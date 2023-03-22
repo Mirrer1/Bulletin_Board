@@ -70,9 +70,6 @@ const postSlice = createSlice({
       state.editCommentFormVisible = false;
     },
     showCheckModal: (state, action) => {
-      state.checkModalVisible = true;
-      state.editCommentFormVisible = false;
-
       if (action.payload.type === 'postEdit') state.editPost = state.singlePost;
       else if (action.payload.type === 'postDelete') state.deletePost = { id: state.singlePost?.id };
       else if (action.payload.type === 'commentEdit')
@@ -81,6 +78,9 @@ const postSlice = createSlice({
         const comment = _.find(state.singlePost?.comments, { id: action.payload.id });
         state.deleteComment = { id: comment?.id };
       }
+
+      state.checkModalVisible = true;
+      state.editCommentFormVisible = false;
     },
     hideCheckModal: state => {
       state.editPost = null;

@@ -7,10 +7,11 @@ import {
   CombinedState,
   combineReducers,
 } from '@reduxjs/toolkit';
+
+import { PostState } from '@typings/db';
 import { HYDRATE, createWrapper } from 'next-redux-wrapper';
 import logger from 'redux-logger';
 import postSlice from '@reducers/postSlice';
-import { PostState } from '@typings/db';
 
 export interface ReducerStates {
   post: PostState;
