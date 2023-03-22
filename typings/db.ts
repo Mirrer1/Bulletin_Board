@@ -1,12 +1,12 @@
 export interface Comment {
   id: number;
-  postId: number;
-  parent: number | null;
-  content: string;
-  writer: string;
-  password: string;
-  created_at: string;
-  updated_at: string | null;
+  postId?: number;
+  parent?: number | null;
+  content?: string;
+  writer?: string;
+  password?: string;
+  created_at?: string;
+  updated_at?: string | null;
 }
 
 export interface Post {
@@ -15,7 +15,7 @@ export interface Post {
   content: string;
   writer: string;
   comments: Comment[];
-  password: string;
+  password?: string;
   created_at: string;
   updated_at: string;
 }
@@ -23,11 +23,30 @@ export interface Post {
 export interface PostState {
   mainPosts: Post[];
   singlePost: Post | null;
+  editPost: Post | null;
+  deletePost: { id: number | null | undefined; password?: string } | null;
   firstComment: Comment[];
   replyComment: Comment[];
+  checkModalVisible: boolean;
+  deleteModalVisible: boolean;
   loadPostsLoading: boolean;
   loadPostsDone: boolean;
   loadPostsError: null | unknown;
+  loadSinglePostLoading: boolean;
+  loadSinglePostDone: boolean;
+  loadSinglePostError: null | unknown;
+  postValidationLoading: boolean;
+  postValidationDone: boolean;
+  postValidationError: null | unknown;
+  addPostLoading: boolean;
+  addPostDone: boolean;
+  addPostError: null | unknown;
+  deletePostLoading: boolean;
+  deletePostDone: boolean;
+  deletePostError: null | unknown;
+  editPostLoading: boolean;
+  editPostDone: boolean;
+  editPostError: null | unknown;
 }
 
 export interface FormVisible {

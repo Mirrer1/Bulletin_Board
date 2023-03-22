@@ -1,15 +1,43 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Form, Input, Row, Col, Space } from 'antd';
+import Router from 'next/router';
 
+import { useAppDispatch, useAppSelector } from '@hooks/reduxHook';
+import { initializeState } from '@reducers/postSlice';
+import { addPost, modifyPost } from '@actions/post';
 import { PostBtn } from '@styles/postDetail/post';
 import { FormWrapper } from '@styles/postingForm';
 
 const PostingForm = () => {
+  const dispatch = useAppDispatch();
   const [form] = Form.useForm();
+  const { editPost, addPostLoading, editPostLoading } = useAppSelector(state => state.post);
   const [inputSize, setInputSize] = useState<'large' | 'middle' | 'small'>('large');
 
+  const onClickCancel = useCallback(() => {
+    dispatch(initializeState());
+    Router.push(editPost ? `/post/${editPost?.id}` : '/');
+  }, []);
+
   const onSubmitForm = useCallback((value: any) => {
-    console.log(value);
+    if (editPost) {
+      dispatch(
+        modifyPost({
+          ...value,
+          id: editPost?.id,
+          created_at: editPost?.created_at,
+          updated_at: new Date().toISOString(),
+        }),
+      );
+    } else {
+      dispatch(
+        addPost({
+          ...value,
+          created_at: new Date().toISOString(),
+          updated_at: null,
+        }),
+      );
+    }
   }, []);
 
   useEffect(() => {
@@ -27,6 +55,16 @@ const PostingForm = () => {
       window.removeEventListener('resize', onResize);
     };
   }, []);
+
+  useEffect(() => {
+    if (editPost)
+      form.setFieldsValue({
+        writer: editPost?.writer,
+        password: editPost?.password,
+        title: editPost?.title,
+        content: editPost?.content,
+      });
+  }, [form, editPost]);
 
   return (
     <>
@@ -55,7 +93,7 @@ const PostingForm = () => {
                   type: 'string',
                   required: true,
                   message: '비밀번호 형식이 올바르지 않습니다.',
-                  pattern: new RegExp(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{1,16}$/),
+                  // pattern: new RegExp(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{1,16}$/),
                 },
               ]}
             >
@@ -109,9 +147,9 @@ const PostingForm = () => {
 
         <Row justify="end">
           <Space>
-            <PostBtn href="/">취소</PostBtn>
-            <PostBtn type="primary" htmlType="submit">
-              작성
+            <PostBtn onClick={onClickCancel}>취소</PostBtn>
+            <PostBtn type="primary" htmlType="submit" loading={editPostLoading || addPostLoading}>
+              {editPost ? '수정' : '작성'}
             </PostBtn>
           </Space>
         </Row>

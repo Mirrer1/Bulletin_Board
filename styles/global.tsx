@@ -75,6 +75,10 @@ const style = css`
   ::-webkit-scrollbar {
     display: none;
   }
+
+  .ant-table-row {
+    cursor: pointer;
+  }
 `;
 
 const GlobalStyle = () => {

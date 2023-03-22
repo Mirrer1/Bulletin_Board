@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
-import { useRouter } from 'next/router';
-import { Divider, Row } from 'antd';
+import React, { useCallback, useEffect } from 'react';
+import Router, { useRouter } from 'next/router';
+import { Divider, Row, Space } from 'antd';
 import { CommentOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import Head from 'next/head';
@@ -9,16 +9,32 @@ import AppLayout from '@components/AppLayout';
 import CommentForm from '@components/PostComment/CommentForm';
 import SingleComment from '@components/PostComment/SingleComment';
 import ReplyComment from '@components/PostComment/ReplyComment';
-import { loadSinglePost } from '@reducers/postSlice';
+import CheckPassword from '@components/Modal/CheckPassword';
+
+import { loadSinglePost } from '@actions/post';
+import { showCheckModal } from '@reducers/postSlice';
 import { useAppDispatch, useAppSelector } from '@hooks/reduxHook';
 import { CommentWrapper } from '@styles/postDetail/postComment';
 import { PostWrapper, PostBtn, PostContent, PostWriteInfo, PostCommentInfo } from '@styles/postDetail/post';
+import DeletePost from '@components/Modal/DeletePost';
 
 const Post = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { id } = router.query;
-  const { singlePost, firstComment } = useAppSelector(state => state.post);
+  const { singlePost, firstComment, checkModalVisible, deleteModalVisible } = useAppSelector(state => state.post);
+
+  const onClickList = useCallback(() => {
+    Router.push('/');
+  }, []);
+
+  const onClickEditPost = useCallback(() => {
+    dispatch(showCheckModal({ type: 'edit' }));
+  }, []);
+
+  const onClickDeletePost = useCallback(() => {
+    dispatch(showCheckModal({ type: 'delete' }));
+  }, []);
 
   useEffect(() => {
     dispatch(loadSinglePost(id));
@@ -38,9 +54,19 @@ const Post = () => {
       <AppLayout>
         <PostWrapper>
           <Row justify="end">
-            <PostBtn type="primary" header="true" href="/">
-              목록
-            </PostBtn>
+            <Space>
+              <PostBtn header="true" onClick={onClickList}>
+                목록
+              </PostBtn>
+
+              <PostBtn type="primary" header="true" onClick={onClickEditPost}>
+                수정
+              </PostBtn>
+
+              <PostBtn type="primary" header="true" onClick={onClickDeletePost}>
+                삭제
+              </PostBtn>
+            </Space>
           </Row>
 
           <PostContent>
@@ -79,6 +105,9 @@ const Post = () => {
 
           <CommentForm />
         </PostWrapper>
+
+        {checkModalVisible && <CheckPassword />}
+        {deleteModalVisible && <DeletePost />}
       </AppLayout>
     </>
   );

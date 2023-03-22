@@ -1,13 +1,13 @@
 {
   "posts": [
     {
-      "id": 1,
-      "title": "제목이여기에붙어요",
-      "content": "내용이여기에붙어요",
-      "writer": "글쓴이가여기에붙어요",
+      "writer": "게시글수정테스트",
       "password": "password_here",
+      "title": "게시글수정테스트게시글수정테스트",
+      "content": "게시글수정테스트게시글수정테스트게시글수정테스트게시글수정테스트게시글수정테스트게시글수정테스트게시글수정테스트게시글수정테스트",
+      "id": 1,
       "created_at": "2014-03-17T14:03:17.000Z",
-      "updated_at": null
+      "updated_at": "2023-03-22T05:02:29.305Z"
     },
     {
       "id": 2,
@@ -52,6 +52,33 @@
       "created_at": "2023-01-20T06:02:36.807Z",
       "updated_at": null,
       "id": 6
+    },
+    {
+      "writer": "게시글작성1",
+      "password": "asdasd",
+      "title": "게시글작성1",
+      "content": "게시글작성1게시글작성1게시글작성1",
+      "created_at": "2023-03-22T05:14:51.880Z",
+      "updated_at": null,
+      "id": 7
+    },
+    {
+      "writer": "게시글 작성 2",
+      "password": "dasdasd",
+      "title": "게시글 작성 2게시글 작성 2",
+      "content": "게시글 작성 2게시글 작성 2게시글 작성 2게시글 작성 2게시글 작성 2",
+      "created_at": "2023-03-22T05:17:41.537Z",
+      "updated_at": null,
+      "id": 8
+    },
+    {
+      "writer": "게시글작성테스트5",
+      "password": "sdadas",
+      "title": "게시글작성테스트5게시글작성테스트5",
+      "content": "게시글작성테스트5게시글작성테스트5게시글작성테스트5게시글작성테스트5게시글작성테스트5",
+      "created_at": "2023-03-22T05:20:58.871Z",
+      "updated_at": null,
+      "id": 9
     }
   ],
   "comments": [
