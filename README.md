@@ -348,42 +348,6 @@ export default ReplyComment;
 
 <br />
 
-## Outstanding Issues.
-
-### #1 JSON Server Delete Error
-
-- 게시글, 댓글 삭제 API를 구현하여 실행한 결과 **401 (Unauthorized) Error가 발생**했습니다.
-
-- 해당 오류는 삭제 권한을 얻기 위한 인증 값, 즉 **Password를 첨부하지 않은 이유로 판단**됩니다.
-
-
-```javascript
-export const removePost = createAsyncThunk('post/removePost', async (data, thunkAPI) => {
-    try {
-      await axios.delete(`/posts/${data.id}?paswword=${data.password}`);
-      message.success('게시글이 정상적으로 삭제되었습니다.');
-      Router.push('/');
-    } catch (error: any) {
-      message.error('게시글 삭제에 실패했습니다.');
-      return thunkAPI.rejectWithValue(error.response.data);
-    }
-  },
-);
-```
-
-
-
-
-<br />
-
-### #2 Redux-Toolkit SSR
-
-- `Redux-Toolkit`을 통한 서버 사이드 랜더링 작업을 완료하지 못했습니다.
-
-- **전체 게시글, 상세 게시글 페이지 접속 시 SSR을 통해 데이터 랜더링 작업이 필요**하다 생각됩니다.
-
-<br />
-
 ## Author.
 
 - Made by [**@Mirrer**](https://www.instagram.com/mirrerlike_/)
